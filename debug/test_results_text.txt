@@ -1,0 +1,346 @@
+Full master years : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+Working master    : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+
+====================================================================
+PDF : Pension-Protection-Fund-Purple-Book-2025-accessible.pdf  (year=2025)
+====================================================================
+Master years : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+Target year  : 2026
+Pages found  : {'asset_allocation': 23, 'bond_splits': 24, 'equity_splits': 25}  (15.8s)
+
+-- Section: asset_allocation --
+  Page 23, 12 year-rows, max 14 cols
+  Ref year: 2025, Columns mapped: 7
+    col[2] -> 1@PURPLEBOOK
+    col[3] -> 1@PURPLEBOOK
+    col[5] -> 1@PURPLEBOOK
+    col[6] -> 1@PURPLEBOOK
+    col[7] -> 1@PURPLEBOOK
+    col[8] -> 1@PURPLEBOOK
+    col[9] -> 1@PURPLEBOOK
+  Year 2026 not in table, using latest=2025
+  Extracted year: 2025
+    1@PURPLEBOOK                             = 70.7
+    1@PURPLEBOOK                             = 14.4
+    1@PURPLEBOOK                             = 16.4
+    1@PURPLEBOOK                             = 2.3
+    1@PURPLEBOOK                             = NA
+    1@PURPLEBOOK                             = 3.8
+    1@PURPLEBOOK                             = 1.1
+
+-- Section: bond_splits --
+  Page 24, 12 year-rows, max 12 cols
+  Ref year: 2025, Columns mapped: 3
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[4] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2025
+  Extracted year: 2025
+    A@PURPLEBOOK                             = 20.8
+    A@PURPLEBOOK                             = 27.8
+    A@PURPLEBOOK                             = 7.0
+
+-- Section: equity_splits --
+  Page 25, 12 year-rows, max 13 cols
+  Ref year: 2025, Columns mapped: 5
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+    col[4] -> A@PURPLEBOOK
+    col[5] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2025
+  Extracted year: 2025
+    A@PURPLEBOOK                             = 4.9
+    A@PURPLEBOOK                             = 1.2
+    A@PURPLEBOOK                             = 42.8
+    A@PURPLEBOOK                             = 6.6
+    A@PURPLEBOOK                             = 44.5
+
+Extraction time: 2.6s
+
+-- Accuracy vs master for year 2025 --
+  Result: 9/17 matched  (53%)
+  Mismatches:
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=15.1  extracted=NA
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=5.0  extracted=NA
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=-7.9  extracted=NA
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=0.7  extracted=3.8  diff=3.10
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=2.1  extracted=1.1  diff=1.00
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=12.9  extracted=2.3  diff=10.60
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=1.5  extracted=NA
+    EDAVG.INDEXLINKED.A@PURPLEBOOK  master=44.4  extracted=7.0  diff=37.40
+
+====================================================================
+PDF : PPF-The-Purple-Book-2024.pdf  (year=2024)
+====================================================================
+Master years : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+Target year  : 2026
+Pages found  : {'asset_allocation': 21, 'bond_splits': 22, 'equity_splits': 23}  (13.8s)
+
+-- Section: asset_allocation --
+  Page 21, 11 year-rows, max 12 cols
+  Ref year: 2024, Columns mapped: 11
+    col[1] -> 1@PURPLEBOOK
+    col[2] -> 1@PURPLEBOOK
+    col[3] -> 1@PURPLEBOOK
+    col[4] -> 1@PURPLEBOOK
+    col[5] -> 1@PURPLEBOOK
+    col[6] -> 1@PURPLEBOOK
+    col[7] -> 1@PURPLEBOOK
+    col[8] -> 1@PURPLEBOOK
+    col[9] -> 1@PURPLEBOOK
+    col[10] -> 1@PURPLEBOOK
+    col[11] -> 1@PURPLEBOOK
+  Year 2026 not in table, using latest=2024
+  Extracted year: 2024
+    1@PURPLEBOOK                             = 15.5
+    1@PURPLEBOOK                             = 69.8
+    1@PURPLEBOOK                             = 14.7
+    1@PURPLEBOOK                             = 5.9
+    1@PURPLEBOOK                             = -5.4
+    1@PURPLEBOOK                             = NA
+    1@PURPLEBOOK                             = NA
+    1@PURPLEBOOK                             = 1.0
+    1@PURPLEBOOK                             = 2.6
+    1@PURPLEBOOK                             = 9.7
+    1@PURPLEBOOK                             = 0.9
+
+-- Section: bond_splits --
+  Page 22, 11 year-rows, max 10 cols
+  Ref year: 2024, Columns mapped: 3
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2024
+  Extracted year: 2024
+    A@PURPLEBOOK                             = 19.5
+    A@PURPLEBOOK                             = 35.0
+    A@PURPLEBOOK                             = 45.5
+
+-- Section: equity_splits --
+  Page 23, 11 year-rows, max 14 cols
+  Ref year: 2024, Columns mapped: 5
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+    col[4] -> A@PURPLEBOOK
+    col[5] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2024
+  Extracted year: 2024
+    A@PURPLEBOOK                             = 6.6
+    A@PURPLEBOOK                             = 1.4
+    A@PURPLEBOOK                             = 41.7
+    A@PURPLEBOOK                             = 6.7
+    A@PURPLEBOOK                             = 43.6
+
+Extraction time: 2.2s
+
+-- Accuracy vs master for year 2024 --
+  Result: 16/17 matched  (94%)
+  Mismatches:
+    RATEFIXEDINTEREST.A@PURPLEBOOK  master=27.7  extracted=35.0  diff=7.30
+
+====================================================================
+PDF : PPF-The-Purple-Book-2023.pdf  (year=2023)
+====================================================================
+Master years : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+Target year  : 2026
+Pages found  : {'asset_allocation': 23, 'bond_splits': 25, 'equity_splits': 26}  (17.1s)
+
+-- Section: asset_allocation --
+  Page 23, 10 year-rows, max 13 cols
+  Ref year: 2023, Columns mapped: 11
+    col[1] -> 1@PURPLEBOOK
+    col[2] -> 1@PURPLEBOOK
+    col[3] -> 1@PURPLEBOOK
+    col[4] -> 1@PURPLEBOOK
+    col[5] -> 1@PURPLEBOOK
+    col[6] -> 1@PURPLEBOOK
+    col[7] -> 1@PURPLEBOOK
+    col[8] -> 1@PURPLEBOOK
+    col[9] -> 1@PURPLEBOOK
+    col[10] -> 1@PURPLEBOOK
+    col[11] -> 1@PURPLEBOOK
+  Year 2026 not in table, using latest=2023
+  Extracted year: 2023
+    1@PURPLEBOOK                             = 18.0
+    1@PURPLEBOOK                             = 68.9
+    1@PURPLEBOOK                             = 13.1
+    1@PURPLEBOOK                             = 5.3
+    1@PURPLEBOOK                             = -5.1
+    1@PURPLEBOOK                             = NA
+    1@PURPLEBOOK                             = NA
+    1@PURPLEBOOK                             = 1.5
+    1@PURPLEBOOK                             = 3.1
+    1@PURPLEBOOK                             = 7.4
+    1@PURPLEBOOK                             = 0.9
+
+-- Section: bond_splits --
+  Page 25, 10 year-rows, max 9 cols
+  Ref year: 2023, Columns mapped: 3
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2023
+  Extracted year: 2023
+    A@PURPLEBOOK                             = 19.5
+    A@PURPLEBOOK                             = 36.5
+    A@PURPLEBOOK                             = 44.1
+
+-- Section: equity_splits --
+  Page 26, 10 year-rows, max 14 cols
+  Ref year: 2023, Columns mapped: 5
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+    col[4] -> A@PURPLEBOOK
+    col[5] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2023
+  Extracted year: 2023
+    A@PURPLEBOOK                             = 7.6
+    A@PURPLEBOOK                             = 1.4
+    A@PURPLEBOOK                             = NA
+    A@PURPLEBOOK                             = 53.6
+    A@PURPLEBOOK                             = 7.8
+
+Extraction time: 1.5s
+
+-- Accuracy vs master for year 2023 --
+  Result: 7/17 matched  (41%)
+  Mismatches:
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=18.8  extracted=18.0  diff=0.80
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=66.5  extracted=68.9  diff=2.40
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=14.7  extracted=13.1  diff=1.60
+    ALLOCATION.NONE.A.1@PURPLEBOOK  master=-3.3  extracted=-5.1  diff=1.80
+    MENTFIXEDINTEREST.A@PURPLEBOOK  master=19.1  extracted=19.5  diff=0.40
+    RATEFIXEDINTEREST.A@PURPLEBOOK  master=32.2  extracted=36.5  diff=4.30
+    EDAVG.INDEXLINKED.A@PURPLEBOOK  master=43.3  extracted=44.1  diff=0.80
+    .DEVELOPEDMARKETS.A@PURPLEBOOK  master=53.0  extracted=53.6  diff=0.60
+    G.EMERGINGMARKETS.A@PURPLEBOOK  master=8.0  extracted=7.8  diff=0.20
+    G.UNQUOTEDPRIVATE.A@PURPLEBOOK  master=30.0  extracted=NA
+
+====================================================================
+PDF : PPF_PurpleBook_2022.pdf  (year=2022)
+====================================================================
+Master years : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+Target year  : 2026
+Pages found  : {'asset_allocation': 23, 'bond_splits': 25, 'equity_splits': 26}  (18.2s)
+
+-- Section: asset_allocation --
+  Page 23, 17 year-rows, max 10 cols
+  Ref year: 2022, Columns mapped: 9
+    col[1] -> 1@PURPLEBOOK
+    col[2] -> 1@PURPLEBOOK
+    col[3] -> 1@PURPLEBOOK
+    col[4] -> 1@PURPLEBOOK
+    col[5] -> 1@PURPLEBOOK
+    col[6] -> 1@PURPLEBOOK
+    col[7] -> 1@PURPLEBOOK
+    col[8] -> 1@PURPLEBOOK
+    col[9] -> 1@PURPLEBOOK
+  Year 2026 not in table, using latest=2022
+  Extracted year: 2022
+    1@PURPLEBOOK                             = 19.5
+    1@PURPLEBOOK                             = 71.6
+    1@PURPLEBOOK                             = 8.9
+    1@PURPLEBOOK                             = 4.6
+    1@PURPLEBOOK                             = -8.8
+    1@PURPLEBOOK                             = 0.1
+    1@PURPLEBOOK                             = 5.2
+    1@PURPLEBOOK                             = 6.8
+    1@PURPLEBOOK                             = 1.0
+
+-- Section: bond_splits --
+  Page 25, 15 year-rows, max 7 cols
+  Ref year: 2022, Columns mapped: 3
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2022
+  Extracted year: 2022
+    A@PURPLEBOOK                             = 22.0
+    A@PURPLEBOOK                             = 30.2
+    A@PURPLEBOOK                             = 47.8
+
+-- Section: equity_splits --
+  Page 26, 15 year-rows, max 7 cols
+  Ref year: 2022, Columns mapped: 3
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2022
+  Extracted year: 2022
+    A@PURPLEBOOK                             = 9.9
+    A@PURPLEBOOK                             = 68.6
+    A@PURPLEBOOK                             = 21.5
+
+Extraction time: 5.6s
+
+-- Accuracy vs master for year 2022 --
+  Result: 15/15 matched  (100%)
+  ALL MATCH
+
+====================================================================
+PDF : PPF_PurpleBook_2021.pdf  (year=2021)
+====================================================================
+Master years : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+Target year  : 2026
+Pages found  : {'asset_allocation': 26, 'bond_splits': 27, 'equity_splits': 27}  (70.4s)
+
+-- Section: asset_allocation --
+  Page 26, 15 year-rows, max 32 cols
+  Ref year: 2021, Columns mapped: 9
+    col[1] -> 1@PURPLEBOOK
+    col[2] -> 1@PURPLEBOOK
+    col[3] -> 1@PURPLEBOOK
+    col[4] -> 1@PURPLEBOOK
+    col[5] -> 1@PURPLEBOOK
+    col[6] -> 1@PURPLEBOOK
+    col[7] -> 1@PURPLEBOOK
+    col[8] -> 1@PURPLEBOOK
+    col[9] -> 1@PURPLEBOOK
+  Year 2026 not in table, using latest=2021
+  Extracted year: 2021
+    1@PURPLEBOOK                             = 19.0
+    1@PURPLEBOOK                             = 72.0
+    1@PURPLEBOOK                             = 9.1
+    1@PURPLEBOOK                             = 4.7
+    1@PURPLEBOOK                             = -9.5
+    1@PURPLEBOOK                             = 0.1
+    1@PURPLEBOOK                             = 6.1
+    1@PURPLEBOOK                             = 6.6
+    1@PURPLEBOOK                             = 0.9
+
+-- Section: bond_splits --
+  Page 27, 14 year-rows, max 28 cols
+  Ref year: 2021, Columns mapped: 3
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2021
+  Extracted year: 2021
+    A@PURPLEBOOK                             = 24.6
+    A@PURPLEBOOK                             = 28.2
+    A@PURPLEBOOK                             = 47.2
+
+-- Section: equity_splits --
+  Page 27, 14 year-rows, max 28 cols
+  Ref year: 2021, Columns mapped: 3
+    col[8] -> A@PURPLEBOOK
+    col[9] -> A@PURPLEBOOK
+    col[10] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2021
+  Extracted year: 2021
+    A@PURPLEBOOK                             = 11.6
+    A@PURPLEBOOK                             = 68.3
+    A@PURPLEBOOK                             = 20.1
+
+Extraction time: 6.8s
+
+-- Accuracy vs master for year 2021 --
+  Result: 15/15 matched  (100%)
+  ALL MATCH
+
+====================================================================
+TOTAL TIME: 153.8s
+====================================================================

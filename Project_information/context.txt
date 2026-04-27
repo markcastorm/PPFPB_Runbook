@@ -1,0 +1,580 @@
+we have tested the hard wa now i want ys to test a different way 2023 had a problem right i have an i dea how a bout we find the pages as usual then con vert them to word before parsing this here are samples of the pdf pages in word you can see the level of accuracy here9D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPF-The-Purple-Book-2023-24.docx)(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPF-The-Purple-Book-2023-26.docx) this can give us a win since the tables are intact analyze these word documents
+The user wants to explore a different approach: instead of using camelot to parse PDF tables, convert the PDF pages to Word format first, then parse the Word documents. They have sample Word documents to analyze. Let me read these Word documents to understand what the tables look like in Word format.
+
+Word documents are .docx files - I need to read them. The Read tool can read files, but .docx files are binary format. Let me try to read them to see if there's a way to analyze the content. Actually, I might need to use a different approach to read .docx files.
+
+Let me first check what's in the memory.txt file the user opened, then try to read the docx files.
+
+Since the Read tool likely won't work with .docx files directly, I'll use Python with the python-docx library to extract the table content from these Word documents.
+
+Let me read those Word documents to analyze the table structure. I'll use Python to extract the content since .docx files need special handling.
+
+Bash Extract paragraphs and tables from first Word doc
+IN
+cd "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook" && python -c "
+import docx
+doc = docx.Document('Project_information/PPF-The-Purple-Book-2023-24.docx')
+print('=== PARAGRAPHS (first 20) ===')
+for i, p in enumerate(doc.paragraphs[:20]):
+    print(f'P{i}: {repr(p.text[:100])}')
+print(f'\nTotal paragraphs: {len(doc.paragraphs)}')
+print(f'Total tables: {len(doc.tables)}')
+print()
+print('=== TABLES ===')
+for ti, tbl in enumerate(doc.tables):
+    print(f'\n--- Table {ti} ({len(tbl.rows)} rows x {len(tbl.columns)} cols) ---')
+    for ri, row in enumerate(tbl.rows):
+        cells = [c.text.strip() for c in row.cells]
+        print(f'  Row {ri}: {cells}')
+        if ri > 20:
+            print('  ...(truncated)')
+            break
+" 2>&1 | head -120
+
+OUT
+=== PARAGRAPHS (first 20) ===
+P0: 'The Purple Book 2023\t22'
+P1: 'Asset allocation continued'
+P2: ''
+P3: ''
+P4: ''
+P5: ''
+
+Total paragraphs: 6
+Total tables: 1
+
+=== TABLES ===
+
+--- Table 0 (14 rows x 12 cols) ---
+  Row 0: ['', '', '', '', '', '', '', '', '', '', '', '']
+  Row 1: ['Year/The Purple Book dataset', 'Asset class', 'Asset class', 'Asset class', 'Asset class', 'Asset class', 'Asset class', 'Asset class', 'Asset class', 'Asset class', 'Asset class', 'Asset class']
+  Row 2: ['Year/The Purple Book dataset', '', '', '', 'Breakdown of other investments', 'Breakdown of other investments', 'Breakdown of other investments', 'Breakdown of other investments', 'Breakdown of other investments', 'Breakdown of other investments', 'Breakdown of other investments', 'Breakdown of other investments']
+  Row 3: ['Year/The Purple Book dataset', 'Equities', 'Bonds', 'Other investments', 'Cash and deposits', 'Property', 'Annuities', 'Diversified growth funds', 'Absolute returns', 'Insurance policies', 'Hedge funds', 'Miscellaneous']
+  Row 4: ['2006', '61.1%', '28.3%', '10.6%', '2.3%', '4.3%', 'n/a', 'n/a', 'n/a', '0.9%', 'n/a', '3.1%']
+  Row 5: ['2011', '41.1%', '40.1%', '18.8%', '4.1%', '4.4%', 'n/a', 'n/a', 'n/a', '1.6%', '2.4%', '6.3%']
+  Row 6: ['2016', '30.3%', '51.3%', '18.4%', '3.0%', '4.8%', '2.1%', 'n/a', 'n/a', '0.1%', '6.6%', '1.7%']
+  Row 7: ['2017', '29.0%', '55.7%', '15.3%', '-0.9%', '5.3%', '3.3%', 'n/a', 'n/a', '0.1%', '6.7%', '0.8%']
+  Row 8: ['2018', '27.0%', '59.0%', '14.0%', '-2.5%', '4.8%', '3.4%', 'n/a', 'n/a', '0.1%', '7.0%', '1.2%']
+  Row 9: ['2019', '24.0%', '62.8%', '13.2%', '-4.4%', '5.0%', '4.0%', 'n/a', 'n/a', '0.3%', '7.4%', '1.0%']
+  Row 10: ['2020', '20.4%', '69.2%', '10.4%', '-7.2%', '4.9%', '5.0%', 'n/a', 'n/a', '0.1%', '6.8%', '0.8%']
+  Row 11: ['2021', '19.0%', '72.0%', '9.1%', '-9.5%', '4.7%', '6.6%', 'n/a', 'n/a', '0.1%', '6.1%', '0.9%']
+  Row 12: ['2022', '19.5%', '71.6%', '8.9%', '-8.8%', '4.6%', '6.8%', 'n/a', 'n/a', '0.1%', '5.2%', '1.0%']
+  Row 13: ['2023', '18.0%', '68.9%', '13.1%', '-5.1%', '5.3%', '7.4%', '1.5%', '3.1%', 'n/a', 'n/a', '0.9%']
+Bash Extract paragraphs and tables from second Word doc
+IN
+cd "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook" && python -c "
+import docx
+doc = docx.Document('Project_information/PPF-The-Purple-Book-2023-26.docx')
+print('=== PARAGRAPHS (first 20) ===')
+for i, p in enumerate(doc.paragraphs[:20]):
+    print(f'P{i}: {repr(p.text[:100])}')
+print(f'\nTotal paragraphs: {len(doc.paragraphs)}')
+print(f'Total tables: {len(doc.tables)}')
+print()
+print('=== TABLES ===')
+for ti, tbl in enumerate(doc.tables):
+    print(f'\n--- Table {ti} ({len(tbl.rows)} rows x {len(tbl.columns)} cols) ---')
+    for ri, row in enumerate(tbl.rows):
+        cells = [c.text.strip() for c in row.cells]
+        print(f'  Row {ri}: {cells}')
+        if ri > 20:
+            print('  ...(truncated)')
+            break
+" 2>&1 | head -120
+
+OUT
+=== PARAGRAPHS (first 20) ===
+P0: 'The Purple Book 2023\t24'
+P1: 'Asset allocation continued'
+P2: ''
+P3: ''
+P4: ''
+P5: ''
+P6: ''
+P7: ''
+P8: ''
+P9: ''
+P10: ''
+P11: ''
+P12: ''
+P13: ''
+P14: ''
+P15: ''
+P16: ''
+P17: ''
+P18: ''
+P19: ''
+
+Total paragraphs: 23
+Total tables: 1
+
+=== TABLES ===
+
+--- Table 0 (2 rows x 6 cols) ---
+  Row 0: ['7%', '', '5%', '', '', '']
+  Row 1: ['6%', '', '7%', '', '7%', '5%']
+Excellent! The first Word document (2023-24.docx) contains exactly the asset allocation table in perfect, clean form:
+
+14 rows x 12 columns
+Row 3 is the header: Year, Equities, Bonds, Other investments, Cash and deposits, Property, Annuities, Diversified growth funds, Absolute returns, Insurance policies, Hedge funds, Miscellaneous
+Rows 4-13 are data rows (2006 through 2023)
+The data is clean - no annotation text, no embedded values, no split cells
+Compare this to the camelot CSV which had issues like:
+
+"7\n.0%" for 7.0% (split across lines in camelot)
+The "2023 restated*\n7\n.6%\n..." embedded annotations
+The Word document version is MUCH cleaner:
+
+'7.0%' is just '7.0%' - clean
+No embedded annotations
+Headers are in their own rows
+Each cell is a clean, individual value
+The second docx (2023-26) seems to be a different page with just a chart (2 rows x 6 cols with percentage fragments). This Word document approach is definitely the way to go since the extraction is so much cleaner and more reliable than the camelot CSV parsing.
+
+Now I'm wondering if I can scale this across all 5 PDFs and all 3 sections - the real challenge is figuring out how to convert those PDF pages to Word format in the first place, and whether that's even feasible for the pages that aren't already in Word. The real bottleneck is whether I can programmatically convert PDF pages to Word documents using tools like pdf2docx or LibreOffice, then parse them with python-docx—that would let me extract specific pages with pdfplumber, convert them, and handle the parsing automatically. Let me see what's actually in the Project_information folder to assess feasibility.
+
+The first Word doc is incredibly clean — perfect 14×12 table with no fragmentation. Let me check what other Word docs are available and assess the full scope.
+
+Bash List all files in Project_information
+IN
+ls "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\" 2>&1
+
+OUT
+Exit code 2
+/usr/bin/bash: eval: line 1: unexpected EOF while looking for matching `"'
+Bash Find all .docx files in project
+IN
+cd "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook" && python -c "
+import glob
+docs = glob.glob('Project_information/**/*.docx', recursive=True) + glob.glob('Project_information/*.docx')
+for d in sorted(docs):
+    print(d)
+" 2>&1
+
+OUT
+<tool_use_error>Cancelled: parallel tool call Bash(ls "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Run…) errored</tool_use_error>
+Bash List files in Project_information
+IN
+ls D:/Projects/SIMBA-RUNBOOKS/PPFPB_Runbook/Project_information/
+
+OUT
+2024-2021 screen shots
+PPF-The-Purple-Book-2023-24.docx
+PPF-The-Purple-Book-2023-26.docx
+PPF-The-Purple-Book-2023.pdf
+PPF-The-Purple-Book-2024.pdf
+PPFPB_DATA_20241205 (1).xlsx
+PPFPB_DATA_20241205 - DATA (1).csv
+PPFPB_META_20231215.xlsx
+PPFPB_Runbook.xlsx
+PPF_PurpleBook_2021.pdf
+PPF_PurpleBook_2022.pdf
+Pension-Protection-Fund-Purple-Book-2025-accessible.pdf
+image 2021 BS.png
+image 2022 BS.png
+image 2023 BS.png
+image 2024 BS.png
+image 2025 BS.png
+image EQ 2021.png
+image EQ 2022.png
+image EQ 2023.png
+image EQ 2024.png
+image EQ 2025.png
+image1.png
+image10.png
+image2.png
+image3.png
+image4.png
+image5.png
+image6.png
+image7.png
+image8.png
+image9.png
+information.txt
+memory.txt
+sample.txt
+So there are only 2 Word documents provided, both for 2023. The user seems to have manually converted a couple of pages from the 2023 PDF to Word as samples to show the quality.
+
+The key question is: can we automatically convert PDF pages to Word programmatically? Let me check:
+
+pdf2docx Python library - can convert PDF pages to docx
+LibreOffice command-line tool
+Microsoft Word COM automation (win32com)
+Let me check what's available on the system.
+
+The naming convention "PPF-The-Purple-Book-2023-24.docx" and "PPF-The-Purple-Book-2023-26.docx" suggests pages 24 and 26 of the 2023 PDF.
+
+Looking at the asset_allocation debug CSV for 2023, page 24 corresponds to the asset_allocation table, while page 26 appears to be a different layout with a 2x6 table structure. So the user has shown me samples of pages 24 and 26 to demonstrate the conversion quality they're looking for.
+
+Now I need to check whether pdf2docx can handle this conversion programmatically.
+
+Only 2 sample docx files, both 2023. Let me check what PDF-to-Word conversion tools are available and what page 26 (the second doc) actually contains.
+
+Bash Full dump of second docx including all paragraphs
+IN
+cd D:/Projects/SIMBA-RUNBOOKS/PPFPB_Runbook && python -c "
+import docx
+doc = docx.Document('Project_information/PPF-The-Purple-Book-2023-26.docx')
+print('Paragraphs:')
+for i, p in enumerate(doc.paragraphs):
+    if p.text.strip():
+        print(f'  P{i}: {repr(p.text[:200])}')
+print()
+print('Tables:')
+for ti, tbl in enumerate(doc.tables):
+    print(f'Table {ti}: {len(tbl.rows)}r x {len(tbl.columns)}c')
+    for ri, row in enumerate(tbl.rows):
+        cells = [c.text.strip() for c in row.cells]
+        print(f'  Row {ri}: {cells}')
+" 2>&1
+
+OUT
+Paragraphs:
+  P0: 'The Purple Book 2023\t24'
+  P1: 'Asset allocation continued'
+
+Tables:
+Table 0: 2r x 6c
+  Row 0: ['7%', '', '5%', '', '', '']
+  Row 1: ['6%', '', '7%', '', '7%', '5%']
+Bash Check PDF-to-Word conversion tools available
+IN
+python -c "
+try:
+    import pdf2docx
+    print('pdf2docx:', pdf2docx.__version__)
+except ImportError:
+    print('pdf2docx: NOT installed')
+
+try:
+    import win32com.client
+    print('win32com: available')
+except ImportError:
+    print('win32com: NOT installed')
+
+try:
+    import subprocess
+    r = subprocess.run(['libreoffice', '--version'], capture_output=True, text=True)
+    print('LibreOffice:', r.stdout.strip())
+except:
+    print('LibreOffice: not found')
+" 2>&1
+
+OUT
+Exit code 1
+Traceback (most recent call last):
+  File "<string>", line 4, in <module>
+    print('pdf2docx:', pdf2docx.__version__)
+                       ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'pdf2docx' has no attribute '__version__'
+pdf2docx is installed (it imported without ImportError, just no __version__ attribute). Let me test it properly to see if it can convert PDF pages to docx.
+
+The second docx ("2023-26") only has 2 rows x 6 cols with some % fragments and the page header "The Purple Book 2023\t24" (same page number as the first doc!) + "Asset allocation continued". The page number 24 matches the first doc too - so it seems like the -26 in the filename is just a naming thing (maybe version/draft number), not page 26.
+
+Actually wait - the header says "24" for BOTH docs? Let me re-check...
+
+So the first doc has page 22 while the second has page 24, both labeled "Asset allocation continued" but with very different content - the first has the full table while the second is mostly empty. I should test whether pdf2docx can actually extract pages programmatically rather than trying to parse these incomplete documents.
+
+Bash Check pdf2docx Converter API
+IN
+python -c "
+from pdf2docx import Converter
+print('pdf2docx imported successfully')
+help(Converter.convert)
+" 2>&1 | head -30
+
+OUT
+pdf2docx imported successfully
+Help on function convert in module pdf2docx.converter:
+
+convert(
+    self,
+    docx_filename: Union[str, IO[~AnyStr]] = None,
+    start: int = 0,
+    end: int = None,
+    pages: list = None,
+    **kwargs
+)
+    Convert specified PDF pages to docx file.
+
+    Args:
+        docx_filename (str, file-like, optional): docx file to write. Defaults to None.
+        start (int, optional): First page to process. Defaults to 0, the first page.
+        end (int, optional): Last page to process. Defaults to None, the last page.
+        pages (list, optional): Range of page indexes. Defaults to None.
+        kwargs (dict, optional): Configuration parameters. Defaults to None.
+
+    Refer to :py:meth:`~pdf2docx.converter.Converter.default_settings` for detail of
+    configuration parameters.
+
+    .. note::
+        Change extension from ``pdf`` to ``docx`` if ``docx_file`` is None.
+
+    .. note::
+        * ``start`` and ``end`` is counted from zero if ``--zero_based_index=True`` (by default).
+        * Start from the first page if ``start`` is omitted.
+        * End with the last page if ``end`` is omitted.
+pdf2docx is available and can convert specific pages! The API lets us pass pages=[page_number] to convert specific pages. The page numbers are 0-based by default.
+
+Now let me think about this approach:
+
+We already have find_pages() using pdfplumber to detect which page number each section is on (0-based or 1-based?)
+Then we convert that specific page using pdf2docx
+Then parse with python-docx
+Let me test this by converting the 2023 asset_allocation page (which is page 24 based on the debug CSV name asset_allocation_p24_t0.csv). The page index would be 23 (0-based).
+
+I'm going to run a quick test to see how clean the conversion output is. Looking at the sample Word doc naming, "PPF-The-Purple-Book-2023-24.docx" suggests the "24" refers to page 24 of the PDF where the asset_allocation table lives. The second doc with "2023-26" might not have converted well because page 26 doesn't contain a table that translates cleanly to Word format.
+
+Wait, checking the header again - both docs show page 24, so the "26" in the filename might be using different numbering. Let me verify the actual page numbers using pdfplumber for the 2023 sections. Actually, I should just test converting a specific page directly and see what output I get. Since camelot found the 2023 asset_allocation on page 24, and camelot uses 1-based indexing while pdf2docx uses 0-based, I'd need to convert that to page 23 for the conversion tool.
+
+The user's proposed approach makes sense - use pdfplumber to locate the page, convert it to Word with pdf2docx, then parse the Word document with python-docx instead of relying on camelot. This should give us better structured data extraction.
+
+The Word document tables are remarkably clean compared to what camelot produces - no fragmented values, no embedded annotations, headers are properly structured. This would eliminate a lot of the messy cleanup logic I've built, like the value splitting and row normalization. But I'd still need the page detection and row identification logic. Let me test the actual 2023 conversion to see if this approach holds up. I'm going to test this approach by converting the 2023 asset allocation page to see how well the header-based column identification works in practice.
+
+pdf2docx is available and supports page-range conversion. This is very promising. Let me test converting the actual 2023 asset_allocation page to see if it matches the sample quality.
+
+Bash Find page numbers pdfplumber detects for 2023 sections
+IN
+cd D:/Projects/SIMBA-RUNBOOKS/PPFPB_Runbook && python -c "
+import pdfplumber, re
+
+# First, find which page pdfplumber detects for 2023 asset_allocation
+PAGE_KEYWORDS = {
+    'asset_allocation': ['cash and deposits', 'annuities'],
+    'bond_splits':      ['bond split', 'index-linked'],
+    'equity_splits':    ['uk quoted', 'overseas quoted'],
+}
+
+pdf_path = 'Project_information/PPF-The-Purple-Book-2023.pdf'
+with pdfplumber.open(pdf_path) as pdf:
+    for sec, kws in PAGE_KEYWORDS.items():
+        for i, page in enumerate(pdf.pages):
+            text = (page.extract_text() or '').lower()
+            if not all(k in text for k in kws):
+                continue
+            years_on_page = set(re.findall(r'\b20(?:0[6-9]|1[0-9]|2[0-9])\b', text))
+            if len(years_on_page) < 4:
+                continue
+            print(f'{sec}: pdfplumber page {i} (0-based), page {i+1} (1-based)')
+            break
+" 2>&1
+
+OUT
+asset_allocation: pdfplumber page 23 (0-based), page 24 (1-based)
+bond_splits: pdfplumber page 25 (0-based), page 26 (1-based)
+equity_splits: pdfplumber page 26 (0-based), page 27 (1-based)
+So:
+
+asset_allocation is on page 23 (0-based) = page 24 (1-based) — this matches asset_allocation_p24_t0.csv
+bond_splits is on page 25 (0-based) = page 26 (1-based) — this is the "2023-26.docx" filename!
+equity_splits is on page 26 (0-based) = page 27 (1-based)
+So the user manually converted pages 24 and 26 (1-based):
+
+Page 24 = asset_allocation → clean 14x12 table ✓
+
+Page 26 = bond_splits → the 2x6 sparse table... that's odd
+
+I'm noticing a discrepancy between the document footers and what pdfplumber is finding. The first document shows page 22 in its footer while the second shows page 24, but these might not align with the actual PDF page numbers. Let me reconsider whether the page numbering in the document metadata matches the PDF extraction.
+
+Now I'm going to test converting page 23 from the PDF directly using pdf2docx to see if I can replicate the clean table formatting from the sample docx file.
+
+Page 23 (0-based) = asset_allocation, page 25 = bond_splits, page 26 = equity_splits. Now let me test pdf2docx conversion of the asset_allocation page and compare it to the sample.
+
+Bash Convert 2023 asset_allocation page (0-based 23) to docx
+IN
+cd D:/Projects/SIMBA-RUNBOOKS/PPFPB_Runbook && python -c "
+from pdf2docx import Converter
+import os
+
+pdf_path = 'Project_information/PPF-The-Purple-Book-2023.pdf'
+out_path = 'debug/test_p24_converted.docx'
+os.makedirs('debug', exist_ok=True)
+
+cv = Converter(pdf_path)
+cv.convert(out_path, pages=[23])  # 0-based page 23
+cv.close()
+print('Converted OK')
+" 2>&1
+
+OUT
+[INFO] Start to convert Project_information/PPF-The-Purple-Book-2023.pdf
+[INFO] [1;36m[1/4] Opening document...[0m
+[INFO] [1;36m[2/4] Analyzing document...[0m
+[INFO] [1;36m[3/4] Parsing pages...[0m
+[INFO] (1/1) Page 24
+[INFO] [1;36m[4/4] Creating pages...[0m
+[INFO] (1/1) Page 24
+[INFO] Terminated in 8.02s.
+Converted OK
+Bash Read the auto-converted docx and compare to sample
+IN
+cd D:/Projects/SIMBA-RUNBOOKS/PPFPB_Runbook && python -c "
+import docx
+doc = docx.Document('debug/test_p24_converted.docx')
+print(f'Tables: {len(doc.tables)}, Paragraphs: {len(doc.paragraphs)}')
+for ti, tbl in enumerate(doc.tables):
+    print(f'\n--- Table {ti} ({len(tbl.rows)}r x {len(tbl.columns)}c) ---')
+    for ri, row in enumerate(tbl.rows):
+        cells = [c.text.strip() for c in row.cells]
+        print(f'  Row {ri}: {cells}')
+" 2>&1
+
+OUT
+Tables: 5, Paragraphs: 11
+
+--- Table 0 (4r x 19c) ---
+  Row 0: ['The Purple Book 2023', 'Introduction', '', '01', '', '', '', '', '', '', '', '09', '', '', '12', '', 'Glossary', '', '22']
+  Row 1: ['The Purple Book 2023', 'Introduction', '', '01', '', '', '', '', '', '', '', '09', 'Claims and', 'PPF', '12', '', 'Glossary', '', '22']
+  Row 2: ['The Purple Book 2023', 'Introduction', '', 'Executive', 'The', 'Scheme', 'Scheme', 'Funding', 'Insolvency', 'Asset', 'Risk', 'PPF levy', 'schemes in', 'compensation', 'PPF risk', '', 'Glossary', '', '22']
+  Row 3: ['The Purple Book 2023', 'Introduction', '', 'summary', 'data', 'demographics', 'funding', 'sensitivities', 'risk', 'allocation', 'reduction', '2022/23', 'assessment', '2022/23', 'developments', '', 'Glossary', 'and tables', '22']
+
+--- Table 1 (12r x 12c) ---
+  Row 0: ['Year/The Purple Book dataset', 'Equities', 'Bonds', 'Other', 'Cash and', 'Property', 'Annuities', 'Diversified', 'Absolute returns', 'Insurance', 'Hedge funds', 'Miscellaneous']
+  Row 1: ['Year/The Purple Book dataset', 'Equities', 'Bonds', 'investments', 'deposits', 'Property', 'Annuities', 'growth funds', 'Absolute returns', 'policies', 'Hedge funds', 'Miscellaneous']
+  Row 2: ['2006', '61.1%', '28.3%', '10.6%', '2.3%', '4.3%', 'n/a', 'n/a', 'n/a', '0.9%', 'n/a', '3.1%']
+  Row 3: ['2011', '41.1%', '40.1%', '18.8%', '4.1%', '4.4%', 'n/a', 'n/a', 'n/a', '1.6%', '2.4%', '6.3%']
+  Row 4: ['2016', '30.3%', '51.3%', '18.4%', '3.0%', '4.8%', '2.1%', 'n/a', 'n/a', '0.1%', '6.6%', '1.7%']
+  Row 5: ['2017', '29.0%', '55.7%', '15.3%', '-0.9%', '5.3%', '3.3%', 'n/a', 'n/a', '0.1%', '6.7%', '0.8%']
+  Row 6: ['2018', '27.0%', '59.0%', '14.0%', '-2.5%', '4.8%', '3.4%', 'n/a', 'n/a', '0.1%', '7.0%', '1.2%']
+  Row 7: ['2019', '24.0%', '62.8%', '13.2%', '-4.4%', '5.0%', '4.0%', 'n/a', 'n/a', '0.3%', '7.4%', '1.0%']
+  Row 8: ['2020', '20.4%', '69.2%', '10.4%', '-7.2%', '4.9%', '5.0%', 'n/a', 'n/a', '0.1%', '6.8%', '0.8%']
+  Row 9: ['2021', '19.0%', '72.0%', '9.1%', '-9.5%', '4.7%', '6.6%', 'n/a', 'n/a', '0.1%', '6.1%', '0.9%']
+  Row 10: ['2022', '19.5%', '71.6%', '8.9%', '-8.8%', '4.6%', '6.8%', 'n/a', 'n/a', '0.1%', '5.2%', '1.0%']
+  Row 11: ['2023', '18.0%', '68.9%', '13.1%', '-5.1%', '5.3%', '7.4%', '1.5%', '3.1%', 'n/a', 'n/a', '0.9%']
+
+--- Table 2 (4r x 12c) ---
+  Row 0: ['Percentage', '100', '11%', '19%', '18%', '15%', '14%', '13%', '10%', '9%', '9%', '13%']
+  Row 1: ['Percentage', '80', '28%', '40%', '51%', '56%', '59%', '63%', '69%', '72%', '72%', '69%']
+  Row 2: ['Percentage', '60', '28%', '40%', '51%', '56%', '59%', '63%', '69%', '72%', '72%', '69%']
+  Row 3: ['Percentage', '40', '28%', '40%', '51%', '56%', '59%', '63%', '69%', '72%', '72%', '69%']
+
+--- Table 3 (2r x 11c) ---
+  Row 0: ['20', '2006', '41%', '30%', '29%', '27%', '24%', '20%', '19%', '19%', '18%']
+  Row 1: ['0', '2006', '2011', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023']
+
+--- Table 4 (1r x 6c) ---
+  Row 0: ['', 'Equities', '', 'Bonds', '', 'Other investments']
+Excellent! The auto-converted docx (Table 1) is essentially identical to the manually converted sample:
+
+Sample (PPF-The-Purple-Book-2023-24.docx):
+
+14 rows x 12 cols
+
+Row 3 header: ['Year/The Purple Book dataset', 'Equities', 'Bonds', 'Other investments', 'Cash and deposits', 'Property', 'Annuities', 'Diversified growth funds', 'Absolute returns', 'Insurance policies', 'Hedge funds', 'Miscellaneous']
+
+Data spanning from 2006 (61.1% equities) through 2023 (18.0% equities)
+
+The auto-converted version has the same data but with a slightly different header structure due to column spanning, splitting the headers across rows 0-1 instead of a single row, though the actual data rows align perfectly.
+
+This is really promising—the pdf2docx conversion is producing clean, consistent data without any fragmentation. Now I should test whether this holds up for the other sections like bond and equity splits on pages 25-26, and then verify the approach works across all five PDFs before committing to it.
+
+I'm weighing two strategies: sticking with pdfplumber and camelot but building more robust normalization, versus switching to pdf2docx and python-docx which eliminates fragmentation and column squishing entirely. The tradeoff is that pdf2docx generates multiple tables per page so I'd need logic to identify the right one, and the conversion takes about 8 seconds per page—but for 15 pages total that's only around 2 minutes, which is acceptable.
+
+I should test this approach on more pages to see if the table identification heuristic holds up and whether header row splitting is a consistent problem.
+
+Table 1 from the auto-conversion is identical to the sample — perfectly clean data, no fragmentation. Now let me test the other 2 sections and all 5 PDFs to assess coverage.
+
+Bash Test pdf2docx conversion for all 5 PDFs and all 3 sections
+IN
+cd D:/Projects/SIMBA-RUNBOOKS/PPFPB_Runbook && python -c "
+from pdf2docx import Converter
+import docx, pdfplumber, re, os
+
+PAGE_KEYWORDS = {
+    'asset_allocation': ['cash and deposits', 'annuities'],
+    'bond_splits':      ['bond split', 'index-linked'],
+    'equity_splits':    ['uk quoted', 'overseas quoted'],
+}
+
+pdfs = {
+    2025: 'Project_information/Pension-Protection-Fund-Purple-Book-2025-accessible.pdf',
+    2024: 'Project_information/PPF-The-Purple-Book-2024.pdf',
+    2023: 'Project_information/PPF-The-Purple-Book-2023.pdf',
+    2022: 'Project_information/PPF_PurpleBook_2022.pdf',
+    2021: 'Project_information/PPF_PurpleBook_2021.pdf',
+}
+
+os.makedirs('debug/docx_test', exist_ok=True)
+
+for year, pdf_path in pdfs.items():
+    print(f'\n=== {year} ===')
+    # Find pages
+    pages_found = {}
+    with pdfplumber.open(pdf_path) as pdf:
+        for sec, kws in PAGE_KEYWORDS.items():
+            for i, page in enumerate(pdf.pages):
+                text = (page.extract_text() or '').lower()
+                if not all(k in text for k in kws):
+                    continue
+                years_on_page = set(re.findall(r'\b20(?:0[6-9]|1[0-9]|2[0-9])\b', text))
+                if len(years_on_page) < 4:
+                    continue
+                pages_found[sec] = i
+                print(f'  {sec}: page {i} (0-based)')
+                break
+
+    # Convert and check each found page
+    for sec, page_idx in pages_found.items():
+        out = f'debug/docx_test/{year}_{sec}.docx'
+        cv = Converter(pdf_path)
+        cv.convert(out, pages=[page_idx])
+        cv.close()
+        
+        d = docx.Document(out)
+        print(f'  {sec} -> {len(d.tables)} tables on page')
+        for ti, tbl in enumerate(d.tables):
+            # Show first 2 rows of each table as preview
+            preview_rows = []
+            for ri, row in enumerate(tbl.rows[:3]):
+                cells = [c.text.strip() for c in row.cells]
+                # Only show if row has actual data
+                if any(c for c in cells):
+                    preview_rows.append(cells[:6])  # first 6 cols only
+            if preview_rows:
+                print(f'    T{ti} ({len(tbl.rows)}r x {len(tbl.columns)}c): {preview_rows[0]}')
+" 2>&1 | grep -v '^\[INFO\]'
+
+OUT
+Command running in background with ID: btf66mdoc. Output is being written to: C:\Users\casto\AppData\Local\Temp\claude\d--Projects-SIMBA-RUNBOOKS-PPFPB-Runbook\b9b2a686-8d9a-4acd-9fc9-e79f1e104329\tasks\btf66mdoc.output
+The command is running in the background. It'll take a while since pdf2docx takes ~8 seconds per page and we have 15 pages total (3 sections × 5 years). Let me wait for it. I'll be notified when it completes.
+
+Actually, I should continue analyzing the approach while waiting. Let me think about what needs to be designed for Approach B.
+
+If the approach works well for all 5 PDFs, the new extraction pipeline would look like:
+
+find_pages() - existing code, unchanged
+
+pdf2docx_convert(pdf_path, page_idx) - new, converts single page
+
+read_docx_table(docx_path) - new, reads the data table from docx (need to identify which table is the right one)
+
+find_year_rows() - simplified (clean cells)
+
+identify_columns() - simplified (can use header OR value matching)
+
+extract_values() - simplified (clean cells, no parsing needed)
+
+The main challenge is reliably identifying which table contains the actual data across different years. I noticed that on page 24 of 2023, Table 1 was the data table, so I need a heuristic that works consistently—maybe looking for the table with the most year-like values in its first column.
+
+Let me wait for the background job to finish before moving forward.
+
+The batch conversion is running in the background (15 pages to convert). I'll get notified when it completes. Let me think through the design while waiting.
+
+What we already know from the 2023 asset_allocation test:
+
+pdf2docx auto-conversion produces the same quality as the manually-converted sample
+Perfectly clean values, no fragmentation, no annotation text
+Multiple tables per page (nav/headers + data) — need to identify the right one
+Table 1 was correct for 2023 p24
+The key design question for the new approach is: which table on the page is the data table? The reliable heuristic is to look for the table whose first column contains year values (e.g. 2006, 2011, etc.) — which is exactly what find_year_rows already does.
+
+Comparison of the two approaches:
+
+Current (camelot)	Proposed (pdf2docx)
+Value fragmentation	Yes — "7\n.0%"	No — clean "7.0%"
+Annotation stripping	Yes — "restated*\n7.6%..."	No — clean data
+normalize_rows needed	Yes — squished col 0	No
+Column identification	Decoder ring (value match)	Header text OR value match
+Conversion time	Fast	~8s per page
+Complexity	High (6 bug fixes)	Much lower
+I'll report full findings once the background job finishes.

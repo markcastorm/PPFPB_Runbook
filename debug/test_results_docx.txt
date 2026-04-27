@@ -1,0 +1,78 @@
+Full master years : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+Working master    : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+
+====================================================================
+PDF : PPF-The-Purple-Book-2024.pdf  (year=2024)
+====================================================================
+Master years : [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+Target year  : 2026
+Pages found  : {'asset_allocation': 21, 'bond_splits': 22, 'equity_splits': 23}  (17.5s)
+Converting 3 pages to docx (parallel)...
+Conversion done in 398.9s
+
+-- Section: asset_allocation --
+  Tables in docx: 3
+    T0: 4r x 19c
+    T1: 19r x 27c
+    T2: 17r x 28c
+  Ref year: 2024, Columns mapped: 11
+    col[1] -> 1@PURPLEBOOK
+    col[2] -> 1@PURPLEBOOK
+    col[6] -> 1@PURPLEBOOK
+    col[7] -> 1@PURPLEBOOK
+    col[8] -> 1@PURPLEBOOK
+    col[9] -> 1@PURPLEBOOK
+    col[10] -> 1@PURPLEBOOK
+    col[11] -> 1@PURPLEBOOK
+    col[12] -> 1@PURPLEBOOK
+    col[13] -> 1@PURPLEBOOK
+    col[14] -> 1@PURPLEBOOK
+  Year 2026 not in table, using latest=2024
+  Extracted year: 2024
+    1@PURPLEBOOK                             = 15.5
+    1@PURPLEBOOK                             = 69.8
+    1@PURPLEBOOK                             = 14.7
+    1@PURPLEBOOK                             = 5.9
+    1@PURPLEBOOK                             = -5.4
+    1@PURPLEBOOK                             = NA
+    1@PURPLEBOOK                             = NA
+    1@PURPLEBOOK                             = 1.0
+    1@PURPLEBOOK                             = 2.6
+    1@PURPLEBOOK                             = 9.7
+    1@PURPLEBOOK                             = 0.9
+
+-- Section: bond_splits --
+  Tables in docx: 3
+    T0: 4r x 19c
+    T1: 21r x 15c
+    T2: 18r x 33c
+  Ref year: 2024, Columns mapped: 3
+    col[1] -> A@PURPLEBOOK
+    col[2] -> A@PURPLEBOOK
+    col[3] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2024
+  Extracted year: 2024
+    A@PURPLEBOOK                             = 19.5
+    A@PURPLEBOOK                             = 35.0
+    A@PURPLEBOOK                             = 45.5
+
+-- Section: equity_splits --
+  Tables in docx: 2
+    T0: 4r x 19c
+    T1: 36r x 54c
+  Ref year: 2024, Columns mapped: 5
+    col[3] -> A@PURPLEBOOK
+    col[7] -> A@PURPLEBOOK
+    col[11] -> A@PURPLEBOOK
+    col[14] -> A@PURPLEBOOK
+    col[17] -> A@PURPLEBOOK
+  Year 2026 not in table, using latest=2024
+  Extracted year: 2024
+    A@PURPLEBOOK                             = 6.6
+    A@PURPLEBOOK                             = 1.4
+    A@PURPLEBOOK                             = 41.7
+    A@PURPLEBOOK                             = 6.7
+    A@PURPLEBOOK                             = 43.6
+
+-- Accuracy vs master for year 2026 --
+  Year 2026 not in master — cannot validate

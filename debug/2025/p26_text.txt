@@ -1,0 +1,85 @@
+Asset allocation continued
+Figure 7.8 | Weighted average asset allocation of schemes by asset size
+Schemes with assets less than £5 million have a lower proportion of their assets invested in bonds, with a higher proportion invested
+in equities.
+Total assets, Cash and Diversified Absolute
+Asset size £bn Equities Bonds deposits Property Annuities growth funds returns Miscellaneous
+Under £5m 2.6 18.6% 56.8% -3.3% 2.6% 17.6% 5.0% 0.1% 2.6%
+£5m–£10m 5.0 16.6% 67.7% -9.3% 1.8% 16.5% 5.2% 0.3% 1.4%
+£10m–£50m 36.8 13.4% 76.7% -14.7% 1.7% 16.4% 4.1% 1.3% 1.1%
+£50m–£100m 35.2 13.2% 81.3% -19.4% 2.2% 16.6% 2.6% 2.0% 1.5%
+£100m–£1bn 261.5 12.9% 75.9% -15.1% 3.0% 18.2% 1.0% 2.4% 1.7%
+Over £1bn 727.0 16.1% 67.9% -4.4% 6.1% 10.6% 0.3% 2.1% 1.3%
+Source: PPF
+egatnecreP
+Figure 7.7 | Equity splits
+Within equities, the proportion invested in UK equities continued to fall, with offsetting increases in the proportions of overseas developed markets
+and unquoted/private equities.
+Weighted average Simple average
+Overseas quoted Developed Emerging Overseas quoted Developed Emerging
+Year/The Purple (tier 1 only markets markets Unquoted/ (tier 1 only markets markets Unquoted/
+Book dataset UK quoted from 2023) (tiers 2 and 3) (tiers 2 and 3) Private UK quoted from 2023) (tiers 2 and 3) (tiers 2 and 3) Private
+2008 48.2% 51.8% – – n/a 60.4% 39.6% – – n/a
+2011 38.0% 57. 2% – – 4.8% 52.7% 46.1% – – 1.2%
+2016 22.4% 68.6% – – 9.0% 38.8% 58.6% – – 2.6%
+2017 20.5% 69.0% – – 10.5% 36.3% 61.0% – – 2.7%
+2018 18.6% 69.4% – – 12.0% 32.1% 65.0% – – 3.0%
+2019 16.6% 69.7% – – 13.7% 29.6% 66.7% – – 3.7% 120
+2020 13.3% 69.0% – – 17.7% 26.9% 68.4% – – 4.8%
+2021 11.6% 68.3% – – 20.1% 24.9% 69.4% – – 5.8%
+100
+2022 9.9% 68.6% – – 21.5% 22.5% 70.9% – – 6.6%
+80
+2023 restated* 7.6% 1.4% 53.0% 8.0% 30.0% 20.3% 28.7% 37 .1 % 4.7% 9.3%
+2024 6.6% 1.4% 41.7% 6.7% 43.6% 17.7% 29.8% 33.9% 4.4% 14.2% 60
+2025 4.9% 1.2% 42.8% 6.6% 44.5% 15.2% 30.9% 35.4% 4.1% 14.4%
+40
+* Weighted average only.
+Note: the rows may not sum to 100 per cent because of rounding. 20
+0
+-20
+Under £5m £5m–£10m £10m–£50m £50m–£100m £100m–£1bn Over £1bn
+Asset size
+Cash and deposits Equities Bonds Property Annuities Diversified growth funds Absolute returns Miscellaneous
+UK quoted Overseas quoted (tier 1 only) Developed markets (tiers 2 and 3) Emerging markets (tiers 2 and 3) Unquoted/Private
+Note: figures may not sum to 100 per cent because of rounding.
+Starting with the 2023 scheme return, ‘overseas quoted’ is now split into two categories for tier 2 and 3 schemes – ‘developed markets’ and ‘emerging
+markets’. The three overseas equity categories in shades of blue in the bars for 2023 onwards should be compared with the blue bars in the years prior
+to 2023.
+Source: PPF
+egatnecreP
+10 11
+The Purple Book 2025 01 02 03 04 05 06 07 08 09 Claims and PPF 12
+Executive The Scheme Scheme Funding history Insolvency Asset Risk PPF levy schemes in compensation PPF risk Charts 24
+Introduction Overview summary data demographics funding and sensitivities risk allocation reduction 2024/25 assessment 2024/25 developments Appendix Glossary and tables
+17%
+16% 18%
+17% 11%
+18%
+68% 77% 81% 76% 68%
+57%
+19% 17% 13% 13% 13% 16%
+Weighted average
+100 5%
+9% 10% 12% 14%
+-9% -15% -19% -15%
+18% 20% 21%
+30%
+80
+44% 44%
+52%
+57% 8%
+60
+69% 69%
+69% 70% 7% 7%
+69% 68% 69%
+40
+53%
+42% 43%
+48%
+20 38%
+22% 21% 19% 17%
+13% 12% 10% 8% 7% 5%
+0
+2008 2011 2016 2017 2018 2019 2020 2021 2022 2023 restated 2024 2025
+Year

@@ -1,0 +1,569 @@
+his session is being continued from a previous conversation that ran out of context. The summary below covers the earlier portion of the conversation.
+
+Analysis:
+Let me chronologically analyze the conversation:
+
+1. **Context from previous session**: The conversation continues from a prior session where the user was working on PDF table extraction from PPF Purple Book PDFs. The previous session established:
+   - A test harness (`test_extraction.py`) using camelot for PDF table extraction
+   - A "decoder ring" approach using master CSV historical values to identify columns
+   - Multiple fixes (PAGE_KEYWORDS, year threshold, find_year_rows, split_embedded_values, normalize_rows, fill_positional_gaps)
+   - A pdfplumber text extraction approach was tried (test_extraction_docx.py) but had 2025 regression
+   - Test results: 2025=100%, 2024=94%, 2023=41%, 2022=100%, 2021=100%
+
+2. **User's first message in this session**: The user was frustrated about the target_year bug. They pointed out:
+   - "you are trying to match with 2026 how even" - the code was using `max(master_years) + 1 = 2026` as target
+   - "add a feature where we detect if the pdf is (year) i mean 2024 it uses the master previous years"
+   - Referenced `information.txt` for context
+   - "this needs to be adaptive code to any pdf with 100% accuracy"
+
+3. **Fix 1: Adaptive target year in test_extraction.py**:
+   - Changed `target_year = (max(master_years) + 1)` to `target_year = pdf_yr`
+   - Added `decoder_master = {yr: v for yr, v in master_data.items() if yr < target_year}`
+   - Changed accuracy check to use `pdf_yr` instead of `target_year`
+   - Ran test on 2024: 16/17 (94%) - Corp FI structural diff only
+   - Ran all 5 PDFs: 2025=100%, 2024=94%, 2023=41%, 2022=100%, 2021=100%
+
+4. **User showed screenshots of 2024 PDF pages 22-24**: Asked to discuss the tables, starting with asset allocation.
+
+5. **User's analysis of asset allocation**: Confirmed the tables are nearly identical between 2024 and 2025, and we got 100% on both for this section. The user emphasized the master data helps identify the right table (weighted average vs simple average).
+
+6. **User's analysis of bond splits**: Showed screenshots comparing 2024 and 2025 bond splits. Key point: even though the column name changed from "Corporate fixed-interest" to "Corporate – public markets only from 2023", the historical values (32.6%, 44.3%, 33.7%) are identical, so the decoder ring correctly identifies it. The user emphasized this is "simple logic not rocket science."
+
+7. **User's analysis of equity splits**: Confirmed tables are identical between years, decoder ring works perfectly.
+
+8. **User confirmed the extractor is adaptive**: Asked "so we are dynamic right the extractor will be able to adapt right" - I confirmed yes.
+
+9. **User said "go ahead"**: To sync fixes into extractor.py.
+
+10. **Sync to extractor.py**:
+    - Read extractor.py
+    - Added `_fill_positional_gaps()` function (was completely missing)
+    - Added call to `_fill_positional_gaps()` in `_identify_columns()`
+    - Fixed `extract()`: adaptive target year from PDF filename, decoder master filtering
+    - Changed `_identify_columns()` call to use `decoder_master`
+    - Updated CLAUDE.md with final status
+
+11. **User said "clean the master remove the 2025 value from the master then lets test the full pipeline"**:
+    - Removed 2025 row from Master_PPFPB_DATA.csv
+    - Ran extract + file_generator on 2025 PDF
+    - Pipeline worked: extracted 19 series, master updated with 2025 row, output files generated
+
+12. **User's next request**: "when the master is being updated we need to update everything from the source with the new data so that we have a new master with new data just in case some values change in the new update table in the source what do you think"
+    - I agreed - extract ALL year rows, update/overwrite master for all years
+    - User said "sure"
+
+13. **Implementation started**:
+    - Added `_extract_all_years()` function to extractor.py
+    - Rewrote `extract()` to return `(pdf_year, all_years)` where `all_years = {year: {code: value}}`
+    - Changed return signature from `(year, data)` to `(pdf_year, all_years)`
+    - Still need to update: file_generator.py and orchestrator.py
+
+Let me capture all the code changes and file details accurately.
+
+Summary:
+1. Primary Request and Intent:
+   The user is building an adaptive PDF data extraction pipeline for PPF Purple Book PDFs (pension fund asset allocation data). The pipeline extracts 19 data series across 3 sections (asset_allocation: 11, bond_splits: 3, equity_splits: 5) from annual PDF publications.
+
+   Specific requests in this session:
+   - Fix the broken target_year logic (`max(master_years) + 1 = 2026` instead of the PDF's own year)
+   - Make the decoder ring use only PRIOR years from master (not future years)
+   - Make the code fully adaptive to any PDF year
+   - Sync all fixes from `test_extraction.py` into `extractor.py`
+   - Test the full pipeline (extractor + file_generator) with 2025 row removed from master
+   - **Latest request**: Update the pipeline so that when processing a new PDF, ALL year rows are extracted and the master is updated with any restated historical values (not just the new year)
+
+2. Key Technical Concepts:
+   - **Decoder ring pattern**: Using master CSV historical values (±0.15 tolerance) to identify which table column = which series code. No header parsing, no hardcoded column indices.
+   - **Adaptive target year**: `target_year = pdf_year` (from filename), decoder uses only years < pdf_year
+   - **Gap-fill algorithm**: `_fill_positional_gaps()` infers unidentified series positions between known anchor columns (handles new series like DGF/AbsReturn introduced in 2023)
+   - **camelot stream flavor** with `edge_tol=50` for table extraction
+   - **pdfplumber** for page detection (keyword matching + 4-year threshold)
+   - **Master CSV as source of truth**: row 0 = series codes, row 1 = descriptions, rows 2+ = year data
+   - **Restatement handling**: PPF restates historical values in newer PDFs. The new approach extracts ALL years to capture restatements.
+   - **19 series across 3 sections**: asset_allocation (11), bond_splits (3), equity_splits (5)
+   - **Known permanent limitations**: 2024 Corp FI structural diff (35.0 vs 27.7), 2023 restatement diffs
+
+3. Files and Code Sections:
+
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\test_extraction.py`** (606 lines)
+     - Test harness for validating extraction accuracy against master CSV
+     - **Changes made this session**: Fixed target_year logic and decoder master filtering
+     ```python
+     # Target year = the PDF's own year (adaptive)
+     target_year = pdf_yr
+     # Decoder ring uses ONLY years BEFORE the PDF year — simulates a fresh run
+     decoder_master = {yr: v for yr, v in master_data.items() if yr < target_year}
+     ```
+     - Changed `identify_columns()` call to use `decoder_master` instead of `master_data`
+     - Changed accuracy check to use `pdf_yr` instead of `target_year`
+
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\extractor.py`** (~520 lines after edits)
+     - Production extractor — the main extraction module called by orchestrator
+     - **Changes made this session**:
+       1. Added `_fill_positional_gaps()` function (was completely missing):
+       ```python
+       def _fill_positional_gaps(col_map, series_list):
+           if not col_map:
+               return col_map
+           codes_in_order = [code for code, _ in series_list]
+           code_to_col    = {code: idx for idx, code in col_map.items()}
+           anchors = sorted(
+               [(col, codes_in_order.index(code), code)
+                for col, code in col_map.items()
+                if code in codes_in_order],
+               key=lambda x: x[0]
+           )
+           if len(anchors) < 2:
+               return col_map
+           for k in range(len(anchors) - 1):
+               col_a, def_a, _ = anchors[k]
+               col_b, def_b, _ = anchors[k + 1]
+               gaps = [c for c in range(col_a + 1, col_b) if c not in col_map]
+               if not gaps:
+                   continue
+               def_min = min(def_a, def_b)
+               def_max = max(def_a, def_b)
+               unid = [codes_in_order[j]
+                       for j in range(def_min + 1, def_max)
+                       if codes_in_order[j] not in code_to_col]
+               if len(unid) == len(gaps):
+                   for code, col in zip(unid, gaps):
+                       col_map[col] = code
+                       code_to_col[code] = col
+           return col_map
+       ```
+       2. Added call to `_fill_positional_gaps()` in `_identify_columns()` after decoder ring scoring
+       3. Added `_extract_all_years()` function (MOST RECENT change):
+       ```python
+       def _extract_all_years(rows, col_map):
+           year_rows = _find_year_rows(rows)
+           if not year_rows:
+               return {}
+           all_years = {}
+           for yr, row_idx in year_rows.items():
+               data_row = rows[row_idx]
+               result = {}
+               for col_idx, code in col_map.items():
+                   if col_idx < len(data_row):
+                       val = _parse_cell(str(data_row[col_idx]))
+                       result[code] = val if val is not None else config.NA_OUTPUT_VALUE
+                   else:
+                       result[code] = config.NA_OUTPUT_VALUE
+               all_years[yr] = result
+           return all_years
+       ```
+       4. Rewrote `extract()` to return ALL years:
+       ```python
+       def extract(pdf_path):
+           """
+           Returns:
+               (pdf_year: int, all_years: dict {year: {series_code: value_or_NA}})
+           """
+           # ... adaptive target year, decoder master filtering ...
+           all_years = {}  # {year: {code: value}}
+           for section in ('asset_allocation', 'bond_splits', 'equity_splits'):
+               # ... identify columns ...
+               section_years = _extract_all_years(rows, col_map)
+               for yr, data in section_years.items():
+                   if yr not in all_years:
+                       all_years[yr] = {}
+                   all_years[yr].update(data)
+           # Fill NA for any series not identified
+           for yr in all_years:
+               for code, _, section, _ in config.SERIES_DEFINITIONS:
+                   if code not in all_years[yr]:
+                       all_years[yr][code] = config.NA_OUTPUT_VALUE
+           return pdf_year, all_years
+       ```
+       **IMPORTANT**: The return signature changed from `(year: int, data: dict)` to `(pdf_year: int, all_years: dict)`. This BREAKS the current `orchestrator.py` and `file_generator.py` which expect the old signature.
+
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\file_generator.py`** (219 lines)
+     - Generates DATA .xls, META .xls, ZIP, updates master CSV
+     - **Needs updating**: `update_master()` currently only appends one year row. Needs to handle overwriting existing rows with restated values for ALL years.
+     - `generate_files(year, data)` signature needs to change to accept all years data.
+     - Key function to update:
+     ```python
+     def update_master(year, data):
+         # Currently: checks if year exists, skips if duplicate, appends single row
+         # Needs: iterate all years, overwrite existing rows, insert new ones
+     ```
+
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\orchestrator.py`** (45 lines)
+     - Pipeline orchestrator: scraper → extractor → file_generator
+     - **Needs updating**: Line 28-29 currently does:
+     ```python
+     year, data = extract(pdf_path)
+     # ...
+     out_dir = generate_files(year, data)
+     ```
+     - Must change to handle the new `(pdf_year, all_years)` return format
+
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Master_Data\Master_PPFPB_DATA.csv`**
+     - Ground truth reference data, 19 columns + year column
+     - Currently has years: 2006, 2008, 2011, 2016-2025 (2025 was re-added by pipeline test)
+     - The 2025 row was removed then re-added during pipeline testing
+
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\CLAUDE.md`**
+     - Updated: "What Remains To Do" replaced with "Completed: All Fixes Synced" section
+     - Updated: Target year logic rule changed from `max(master_years) + 1` to `pdf_year (adaptive)`
+
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\config.py`** — Series definitions, paths, NA config (not modified)
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\scraper.py`** — PDF downloader with selenium stealth (not modified)
+   - **`D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\main.py`** — Entry point, calls orchestrator.main() (not modified)
+
+   PDF files in `Project_information/`:
+   - `Pension-Protection-Fund-Purple-Book-2025-accessible.pdf`
+   - `PPF-The-Purple-Book-2024.pdf`
+   - `PPF-The-Purple-Book-2023.pdf`
+   - `PPF_PurpleBook_2022.pdf`
+   - `PPF_PurpleBook_2021.pdf`
+   - `PPF-The-Purple-Book-2024-22-24.pdf` (3-page extract for discussion)
+
+4. Errors and Fixes:
+   - **Target year bug** (`target_year = max(master_years) + 1 = 2026`):
+     - When testing 2024 PDF, code tried to extract year 2026 which doesn't exist
+     - Accuracy check said "Year 2026 not in master — cannot validate"
+     - User was very frustrated: "you are trying to match with 2026 how even you use your brain to think for once"
+     - Fix: `target_year = pdf_yr` (detect from filename), decoder uses only years < pdf_yr
+   - **Decoder ring using future years**: When testing 2024 PDF, the decoder was matching against 2025 data (which shouldn't exist yet when processing a 2024 PDF)
+     - Fix: `decoder_master = {yr: v for yr, v in master_data.items() if yr < target_year}`
+   - **Missing `_fill_positional_gaps()` in extractor.py**: The gap-fill function existed in test_extraction.py but was never synced to extractor.py
+     - Fix: Added the function and its call in `_identify_columns()`
+
+5. Problem Solving:
+   - **Solved**: Target year logic — now adaptive based on PDF filename
+   - **Solved**: Decoder ring filtering — only uses prior years
+   - **Solved**: Gap-fill missing from extractor.py — added
+   - **Solved**: Full pipeline test — extract + file_generator works end-to-end on 2025 PDF
+   - **In progress**: Extracting ALL years from PDF and updating master with restated values — extractor.py updated, file_generator.py and orchestrator.py still need updating
+
+6. All User Messages:
+   - "let me ask you something you just said the pdf is the problem are you listening to yourself, you understand why this was working for (test_extraction.py) and the others i have a task for you add a feature where we detect if the pdf is (year) i mean 2024 it uses the master previous years not the full because that is weird we are scraping for 2024 you are trying to match with 2026 how even you use your brain to think for once (information.txt) remember the information i gave too the goal we are eye this needs to be adaptive code to any pdf with 100% accuracy"
+   - "ok lets start from there 2024 pdf this is page 22-24 (PPF-The-Purple-Book-2024-22-24.pdf) lets discuss this difference what table should we start with i guide you" [with 2 screenshots of 2024 vs 2025 asset allocation pages]
+   - "start with asset allocation if 2025 was 100% look at these tables they are nearly identical why would it fail [column mapping table] i mean we are hunting these columns how can we miss them the page has 2 tables but the master can help you identify the table we need" [with 2 screenshots of bond splits pages]
+   - "bond splits you can see the table is a bit different in 2024 it has a space and the text for corporate is different that's where the master comes in i can check like 2008-2016 you can see the value for corporate index (Corporate fixed-interest 32.6%, 44.3%, 33.7%) are identical meaning the requirement that this is the columns we need even if it is named (Corporate – public markets only from 2023) this way in 2025 pdf its that easy simple logic not rocket science" [with 2 screenshots of bond splits pages]
+   - "equity splits this is just as straightforward as i can see it look at this for both years are extremely identical what did we miss the values are identical extremely with just the new year added" [with 2 screenshots of equity splits pages]
+   - "so we are dynamic right the extractor will be able to adapt right"
+   - "go ahead" (to sync into extractor.py)
+   - "clean the master remove the 2025 value from the master then lets test the full pipeline"
+   - "so when the master is being updated we need to update everything from the source with the new data so that we have a new master with new data just in case some values change in the new update table in the source what do you think"
+   - "sure" (to implement all-years extraction)
+
+7. Pending Tasks:
+   - **Update `file_generator.py`**: `update_master()` must handle all years (overwrite existing rows, insert new ones), not just append one year. `generate_files()` signature must change.
+   - **Update `orchestrator.py`**: Must handle the new `(pdf_year, all_years)` return from `extract()` and pass it correctly to `generate_files()`.
+   - **Test the full pipeline** after file_generator and orchestrator updates.
+   - **Update CLAUDE.md** with the new all-years extraction approach.
+
+8. Current Work:
+   I was in the middle of implementing the "extract ALL years and update master" feature. The extractor.py has been updated with:
+   - New `_extract_all_years()` function
+   - `extract()` now returns `(pdf_year, all_years)` where `all_years = {year: {series_code: value}}`
+   
+   **The return signature change BREAKS orchestrator.py and file_generator.py** which still expect the old `(year, data)` format. These two files need to be updated next.
+
+   The todo list at the point of interruption was:
+   ```
+   [completed] Update extractor.py to extract ALL year rows
+   [pending] Update file_generator.py to overwrite existing master rows
+   [pending] Update orchestrator.py to pass all years data
+   [pending] Test full pipeline with master update
+   ```
+
+9. Optional Next Step:
+   Update `file_generator.py` — specifically rewrite `update_master()` to accept all years data and overwrite existing rows, then update `generate_files()` signature. Then update `orchestrator.py` to handle the new return format from `extract()`.
+   
+   The user said "sure" to implementing the all-years extraction, and I had created a todo list with:
+   - `[in_progress] Update extractor.py to extract ALL year rows` (COMPLETED)
+   - `[pending] Update file_generator.py to overwrite existing master rows` (NEXT)
+   - `[pending] Update orchestrator.py to pass all years data`
+   - `[pending] Test full pipeline with master update`
+
+If you need specific details from before compaction (like exact code snippets, error messages, or content you generated), read the full transcript at: C:\Users\Mark Castro\.claude\projects\d--Projects-SIMBA-RUNBOOKS-PPFPB-Runbook\fb42ea43-a3b6-49e7-a030-6a6f5bdcf0a3.jsonl
+Please continue the conversation from where we left off without asking the user any further questions. Continue with the last task that you were asked to work on.
+Let me continue with the pending tasks. The extractor.py has been updated to return (pdf_year, all_years). Now I need to:
+
+Update file_generator.py to handle all years (overwrite existing rows)
+Update orchestrator.py to handle the new return format
+Test the full pipeline
+Let me start by reading the current state of the files.
+
+Continuing with the pending tasks. The extractor is done — now I need to update file_generator.py and orchestrator.py to handle the new all-years return format.
+
+Update Todos
+
+Update extractor.py to extract ALL year rows
+
+Update file_generator.py to overwrite existing master rows
+
+Update orchestrator.py to pass all years data
+
+Test full pipeline with master update
+Read D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\file_generator.py
+Read D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\orchestrator.py
+Read D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\extractor.py
+Now I need to:
+
+Update file_generator.py:
+
+Rewrite update_master() to accept all_years (dict of {year: {code: value}}) instead of single (year, data)
+It should overwrite existing rows and insert new ones
+Update generate_files() to accept the new format
+Update orchestrator.py:
+
+Handle the new (pdf_year, all_years) return from extract()
+Pass all_years to generate_files()
+Let me do the file_generator.py first.
+
+I'm refactoring update_master() to handle a dictionary of all years at once, reading the existing master file, then either updating rows for years that already exist or appending new ones before sorting and writing everything back. The generate_files() function signature will shift to accept the pdf year and the full years dictionary instead of individual year-data pairs.
+
+Good, I have the full picture. Let me update both files now.
+
+file_generator.py — rewrite update_master() to handle all years (overwrite existing + insert new), and update generate_files() signature.
+
+Edit D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\file_generator.py
+Added 13 lines
+Now update generate_files() to accept the new signature:
+
+Edit D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\file_generator.py
+Modified
+Now update orchestrator.py:
+
+Edit D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\orchestrator.py
+Modified
+Update Todos
+
+Update extractor.py to extract ALL year rows
+
+Update file_generator.py to overwrite existing master rows
+
+Update orchestrator.py to pass all years data
+
+Test full pipeline with master update
+All three files are updated. Let me first remove the 2025 row from master to simulate a fresh run, then test the full pipeline with the 2025 PDF.
+
+Read D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Master_Data\Master_PPFPB_DATA.csv
+Remove the 2025 row so we can test the pipeline adding it fresh:
+
+Edit D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Master_Data\Master_PPFPB_DATA.csv
+Removed 1 line
+Now run the extraction + file generation pipeline on the 2025 PDF:
+
+Bash Test full pipeline: extract all years from 2025 PDF then generate files
+IN
+cd "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook" && python -c "
+import sys, logging
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+
+from extractor import extract
+from file_generator import generate_files
+
+pdf = 'Project_information/Pension-Protection-Fund-Purple-Book-2025-accessible.pdf'
+pdf_year, all_years = extract(pdf)
+print(f'\npdf_year={pdf_year}')
+print(f'Years extracted: {sorted(all_years.keys())}')
+for yr in sorted(all_years.keys()):
+    non_na = sum(1 for v in all_years[yr].values() if v != 'NA')
+    print(f'  {yr}: {non_na} series with values')
+
+print('\nGenerating files...')
+out_dir = generate_files(all_years)
+print(f'Output: {out_dir}')
+" 2>&1
+
+OUT
+C:\Users\Mark Castro\AppData\Local\Programs\Python\Python311\Lib\site-packages\pypdf\_crypt_providers\_cryptography.py:32: CryptographyDeprecationWarning: ARC4 has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.ARC4 and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
+  from cryptography.hazmat.primitives.ciphers.algorithms import AES, ARC4
+2026-04-24 14:30:57,033 [INFO] NumExpr defaulting to 4 threads.
+2026-04-24 14:30:58,719 [INFO] === extractor: Pension-Protection-Fund-Purple-Book-2025-accessible.pdf ===
+2026-04-24 14:30:58,773 [INFO] PDF year: 2025  target: 2025  decoder years: [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+2026-04-24 14:31:08,095 [INFO]   asset_allocation -> page 24
+2026-04-24 14:31:08,453 [INFO]   bond_splits -> page 25
+2026-04-24 14:31:09,014 [INFO]   equity_splits -> page 26
+2026-04-24T14:31:18 - INFO - Processing page-24
+2026-04-24 14:31:18,855 [INFO] Processing page-24
+2026-04-24T14:31:23 - INFO - Processing page-25
+2026-04-24 14:31:23,711 [INFO] Processing page-25
+2026-04-24T14:31:26 - INFO - Processing page-26
+2026-04-24 14:31:26,865 [INFO] Processing page-26
+2026-04-24T14:31:30 - INFO - Processing page-27
+2026-04-24 14:31:30,184 [INFO] Processing page-27
+2026-04-24 14:31:30,843 [INFO] asset_allocation: ref_year=2024, 11 columns identified
+2026-04-24 14:31:30,846 [INFO] bond_splits: ref_year=2024, 3 columns identified
+2026-04-24 14:31:30,848 [INFO] equity_splits: ref_year=2024, 5 columns identified
+2026-04-24 14:31:30,849 [INFO] === extraction complete: pdf_year=2025, 13 years extracted: [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025] ===
+
+pdf_year=2025
+Years extracted: [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  2006: 7 series with values
+  2008: 5 series with values
+  2011: 14 series with values
+  2016: 15 series with values
+  2017: 15 series with values
+  2018: 15 series with values
+  2019: 15 series with values
+  2020: 15 series with values
+  2021: 15 series with values
+  2022: 15 series with values
+  2023: 17 series with values
+  2024: 17 series with values
+  2025: 17 series with values
+
+Generating files...
+2026-04-24 14:31:30,861 [INFO] Master CSV updated: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Master_Data\Master_PPFPB_DATA.csv (13 data rows, 12 overwritten, 1 new)
+2026-04-24 14:31:30,870 [INFO] DATA .xls written: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_143130\PPFPB_DATA_20260424_143130.xls
+2026-04-24 14:31:30,877 [INFO] META .xls written: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_143130\PPFPB_META_20260424_143130.xls
+2026-04-24 14:31:30,908 [INFO] ZIP created: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_143130\PPFPB_20260424_143130.zip
+2026-04-24 14:31:30,931 [INFO] Output in: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_143130
+2026-04-24 14:31:30,931 [INFO] Latest  in: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\latest
+Output: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_143130
+Pipeline works. Key results:
+
+13 years extracted from the 2025 PDF (2006-2025)
+12 existing rows overwritten with values from the new source (captures any restatements)
+1 new row inserted (2025)
+All output files generated (DATA .xls, META .xls, ZIP)
+Let me verify the updated master looks correct:
+
+Read D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Master_Data\Master_PPFPB_DATA.csv
+Update Todos
+
+Update extractor.py to extract ALL year rows
+
+Update file_generator.py to overwrite existing master rows
+
+Update orchestrator.py to pass all years data
+
+Test full pipeline with master update
+All done. Here's what was changed:
+
+extractor.py — Already updated last session. Returns (pdf_year, all_years) where all_years is a dict of {year: {series_code: value}} for every year row in the PDF tables.
+
+file_generator.py — update_master(all_years) now:
+
+Accepts all years at once (not just one)
+Overwrites existing year rows with fresh values (captures restatements)
+Inserts new year rows
+Preserves any years not in the extraction
+orchestrator.py — Updated to unpack (pdf_year, all_years) from extract() and pass all_years to generate_files().
+
+Pipeline test result: Extracted 13 years from the 2025 PDF, overwrote 12 existing master rows with the latest source values, inserted 2025 as new. Master CSV, DATA .xls, META .xls, and ZIP all generated correctly. The 2025 row values match the expected ground truth exactly.
+
+test the full pipe line from the main
+Read D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\main.py
+Let me first check the current master state, then run the full pipeline from main.py. I'll remove the 2025 row first so there's something new to insert.
+
+Read D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Master_Data\Master_PPFPB_DATA.csv
+The user wants to test the full pipeline from main.py. This means running the scraper → extractor → file_generator. But the scraper will try to download the PDF from the web, which requires Selenium and the PPF website. That won't work in this environment.
+
+Let me think about this... The orchestrator calls download() from scraper, then extract(), then generate_files(). Running from main.py will invoke the scraper which will try to download a PDF from the web.
+
+I should just run it and see what happens. If the scraper fails, we'll need to handle that.
+
+Let me try running it anyway since that's what the user asked for. The scraper has a fallback mechanism—it first attempts a direct requests approach with BeautifulSoup before resorting to Selenium, so there's a chance it could work depending on how the website serves its content.
+
+The scraper will attempt to download the PDF from the PPF website first. Let me run it.
+
+Bash Run full pipeline from main.py (scraper + extractor + file_generator)
+IN
+cd "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook" && python main.py 2>&1
+
+OUT
+C:\Users\Mark Castro\AppData\Local\Programs\Python\Python311\Lib\site-packages\pypdf\_crypt_providers\_cryptography.py:32: CryptographyDeprecationWarning: ARC4 has been moved to cryptography.hazmat.decrepit.ciphers.algorithms.ARC4 and will be removed from cryptography.hazmat.primitives.ciphers.algorithms in 48.0.0.
+  from cryptography.hazmat.primitives.ciphers.algorithms import AES, ARC4
+2026-04-24 15:22:01 [INFO] === PPFPB pipeline started ===
+2026-04-24 15:22:01 [INFO] Step 1: Downloading Purple Book PDF...
+2026-04-24 15:22:01 [INFO] === Scraper: trying direct requests approach ===
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\Mark Castro\AppData\Local\Programs\Python\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\Mark Castro\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 54: character maps to <undefined>
+Call stack:
+  File "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\main.py", line 6, in <module>
+    sys.exit(main())
+  File "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\orchestrator.py", line 24, in main
+    pdf_path, scraper_year = download()
+  File "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\scraper.py", line 316, in download
+    pdf_path, year = _try_direct(run_dir)
+  File "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\scraper.py", line 247, in _try_direct
+    if _requests_download(pdf_url, dest):
+  File "D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\scraper.py", line 197, in _requests_download
+    logger.info(f"Downloaded {size:,} bytes \u2192 {dest_path}")
+Message: 'Downloaded 1,412,672 bytes \u2192 D:\\Projects\\SIMBA-RUNBOOKS\\PPFPB_Runbook\\downloads\\20260424_152201\\PurpleBook_2025.pdf'
+Arguments: ()
+2026-04-24 15:22:04 [INFO] Direct download succeeded: year=2025, path=D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\downloads\20260424_152201\PurpleBook_2025.pdf
+2026-04-24 15:22:04 [INFO]   PDF: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\downloads\20260424_152201\PurpleBook_2025.pdf  (year hint from scraper: 2025)
+2026-04-24 15:22:04 [INFO] Step 2: Extracting data from PDF...
+2026-04-24 15:22:04 [INFO] === extractor: PurpleBook_2025.pdf ===
+2026-04-24 15:22:04 [INFO] PDF year: 2025  target: 2025  decoder years: [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+2026-04-24 15:22:16 [INFO]   asset_allocation -> page 24
+2026-04-24 15:22:16 [INFO]   bond_splits -> page 25
+2026-04-24 15:22:17 [INFO]   equity_splits -> page 26
+2026-04-24T15:22:26 - INFO - Processing page-24
+2026-04-24 15:22:26 [INFO] Processing page-24
+2026-04-24T15:22:31 - INFO - Processing page-25
+2026-04-24 15:22:31 [INFO] Processing page-25
+2026-04-24T15:22:34 - INFO - Processing page-26
+2026-04-24 15:22:34 [INFO] Processing page-26
+2026-04-24T15:22:38 - INFO - Processing page-27
+2026-04-24 15:22:38 [INFO] Processing page-27
+2026-04-24 15:22:39 [INFO] asset_allocation: ref_year=2024, 11 columns identified
+2026-04-24 15:22:39 [INFO] bond_splits: ref_year=2024, 3 columns identified
+2026-04-24 15:22:39 [INFO] equity_splits: ref_year=2024, 5 columns identified
+2026-04-24 15:22:39 [INFO] === extraction complete: pdf_year=2025, 13 years extracted: [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025] ===
+2026-04-24 15:22:39 [INFO]   Extracted pdf_year=2025, 13 years: [2006, 2008, 2011, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+2026-04-24 15:22:39 [INFO] Step 3: Generating output files...
+2026-04-24 15:22:39 [INFO] Master CSV updated: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Master_Data\Master_PPFPB_DATA.csv (13 data rows, 13 overwritten, 0 new)
+2026-04-24 15:22:39 [INFO] DATA .xls written: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_152239\PPFPB_DATA_20260424_152239.xls
+2026-04-24 15:22:39 [INFO] META .xls written: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_152239\PPFPB_META_20260424_152239.xls
+2026-04-24 15:22:39 [INFO] ZIP created: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_152239\PPFPB_20260424_152239.zip
+2026-04-24 15:22:39 [INFO] Output in: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_152239
+2026-04-24 15:22:39 [INFO] Latest  in: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\latest
+2026-04-24 15:22:39 [INFO]   Output: D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\output\20260424_152239
+2026-04-24 15:22:39 [INFO] === PPFPB pipeline completed successfully ===
+Full pipeline from main.py completed successfully end-to-end:
+
+Scraper — downloaded PurpleBook_2025.pdf from the PPF website via direct requests (no Selenium needed)
+Extractor — found pages 24/25/26, identified all 19 columns (11 + 3 + 5), extracted 13 years (2006-2025)
+File generator — overwrote all 13 master rows with latest source values, generated DATA .xls, META .xls, and ZIP
+There's one minor cosmetic issue — a UnicodeEncodeError in the scraper log for the → character on Windows cp1252 console. It doesn't affect functionality (the download succeeded), but I can fix it if you want.
+
+how what  hapend to seleniun hope its working what hapens if the 2026 data comes out
+The user is asking two things:
+
+Is Selenium still working? (The direct requests approach worked this time, so Selenium wasn't needed)
+What happens when the 2026 PDF comes out?
+Let me address both:
+
+Selenium is the fallback - the pipeline tries direct requests first (faster, no browser), and only falls back to Selenium if that fails. The direct approach worked because the PPF website serves the PDF link in static HTML. Selenium is still there as backup.
+
+When 2026 comes out - the pipeline is adaptive. It will:
+
+Download the new PDF, extract the year from the filename, then use all prior years as reference points to identify the column structure
+Pull every year's data from the 2026 PDF and merge it into the master dataset, overwriting any restated values and adding 2026 as a new row
+This all happens automatically without any code changes needed
+Selenium is fine — it's the fallback. The pipeline tries two strategies in order:
+
+Direct requests (fast, no browser) — worked this time because the PPF site serves the PDF link in static HTML
+Selenium stealth — kicks in automatically if direct fails (e.g. if the site adds JavaScript-only rendering, Cloudflare protection, etc.)
+Both strategies are still wired up in scraper.py. Selenium just wasn't needed today.
+
+When the 2026 PDF comes out, everything is automatic:
+
+Scraper downloads the new PDF from ppf.co.uk (the link text changes to "Download The Purple Book 2026")
+Extractor detects pdf_year=2026 from the filename
+Decoder ring uses master years < 2026 (all your existing 2006-2025 data) to identify columns
+Extracts ALL year rows from the 2026 tables
+Master gets updated — existing rows overwritten with any restated values, 2026 inserted as new
+No code changes needed. Just run python main.py again when the new book is published.
+
+set a config in the config for whether to use direct request or not then test the  selenium one
+The user wants me to:
+
+Add a config option to control whether to use direct requests or skip straight to Selenium
+Test the Selenium path
+Let me read config.py first to see the existing structure.

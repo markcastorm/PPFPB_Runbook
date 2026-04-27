@@ -1,0 +1,78 @@
+Asset allocation continued
+Figure 7.6 | Bond splits – granular breakdown of The Purple Book 2025 dataset
+Government fixed interest and index-linked bonds are mostly long-dated. Investment grade corporate bond proportions are broadly balanced between
+territory and term.
+Weighted average
+Short and
+Bond category All Tier 1 Short Medium medium Long Unassigned*
+Government fixed-interest 20.8% 0.5% 0.2% 3.3% – 16.8% 0.0%
+Index-linked 44.4% 0.6% 5.5% 14.2% – 24.1% 0.0%
+Corporate fixed-interest, of which: 34.8% – – – – – –
+Investment grade 0.4% 0.4% – – – – –
+UK investment grade 12.2% – – – 6.0% 6.2% –
+Overseas investment grade 10.9% – – – 6.8% 4.1% –
+Sub-investment grade 4.3% – – – – – –
+Private debt 7.0% – – – – – –
+Total 100% 1.5% 5.7% 17 .5 % 12.8% 51.2% 0.0%
+* ‘Unassigned’ is generally where a scheme is in tiers 2 or 3 but did not provide the granular breakdown.
+Tier 1 All Short Medium Short and Medium Long
+Source: PPF
+egatnecreP
+Figure 7.5 | Bond splits – high-level breakdown
+The proportions of the high-level types of bonds have remained relatively stable compared to last year.
+Weighted average Simple average
+Corporate – Corporate
+Government public markets Corporate – Government – public markets Corporate –
+Year/The Purple Book dataset fixed-interest only from 2023 private debt Index-linked fixed-interest only from 2023 private debt Index-linked
+2008 33.2% 32.6% – 33.9% 47. 2% 33.0% – 19.8%
+2011 19.6% 44.3% – 36.1% 31.2% 47.1 % – 21.7%
+2016 21.9% 33.7% – 44.4% 24.4% 49.0% – 26.6%
+2017 24.1% 31.4% – 44.5% 25.9% 46.8% – 27.3 %
+2018 24.1% 28.8% – 47.1 % 27. 2% 42.1% – 30.8%
+2019 25.4% 28.4% – 46.2% 29.0% 38.9% – 32.1%
+2020 25.9% 28.0% – 46.1% 29.4% 36.1% – 34.6%
+2021 24.6% 28.2% – 47. 2% 30.4% 34.8% – 34.8%
+2022 22.0% 30.2% – 47.8 % 30.2% 35.7% – 34.1%
+2023 restated* 19.1% 32.2% 5.4% 43.3% 25.6% 35.4% 1.5% 37 .5 %
+2024 19.5% 27.7% 7.3 % 45.5% 27.6% 33.3% 2.0% 37 .1 %
+2025 20.8% 27.8 % 7.0% 44.4% 28.2% 31.9% 2.0% 37 .9%
+50
+* Weighted average only.
+Note: the rows may not sum to 100 per cent because of rounding. 40
+Weighted average
+30
+20
+1 0
+0 Fixed-interest Index-linked Investment grade UK Overseas Sub-investment Private debt
+(tier 1 only) investment grade investment grade grade
+(tiers 2 & 3) (tiers 2 & 3)
+Government bonds Corporate bonds
+Government fixed-interest Corporate debt Index-linked
+Source: PPF
+Note: figures may not sum to 100 per cent because of rounding.
+Starting with the 2023 scheme return, corporate debt includes a private debt subcategory. The two corporate debt categories in shades of blue in the bars for 2023 onwards should be compared
+with the blue bars in the years prior to 2023.
+egatnecreP
+10 11
+The Purple Book 2025 01 02 03 04 05 06 07 08 09 Claims and PPF 12
+Executive The Scheme Scheme Funding history Insolvency Asset Risk PPF levy schemes in compensation PPF risk Charts 23
+Introduction Overview summary data demographics funding and sensitivities risk allocation reduction 2024/25 assessment 2024/25 developments Appendix Glossary and tables
+24%
+100
+80
+34% 36%
+44% 44% 47% 46% 46% 47% 48% 43% 45% 44%
+17% 14% 60
+5% 7% 7% 6% 4%
+33%
+40
+44%
+34% 31% 29% 28% 28% 28% 30% 32% 28% 28%
+3% 5% 6% 7% 4% 7%
+20
+33%
+20% 22% 24% 24% 25% 26% 25% 22% 19% 20% 21%
+0
+2008 2011 2016 2017 2018 2019 2020 2021 2022 2023 restated 2024 2025
+Year
+Corporate – public markets Corporate – private debt

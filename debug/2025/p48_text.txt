@@ -1,0 +1,239 @@
+10 11
+The Purple Book 2025 01 02 03 04 05 06 07 08 09 Claims and PPF 12
+Executive The Scheme Scheme Funding history Insolvency Asset Risk PPF levy schemes in compensation PPF risk Charts 46
+Introduction Overview summary data demographics funding and sensitivities risk allocation reduction 2024/25 assessment 2024/25 developments Appendix Glossary and tables
+Charts and tables
+Chapter 02:
+Figure 4.7 Estimated full buy-out funding ratios by size of scheme Chapter 06: Figure 9.8 Levy as a proportion of assets by levy band
+Figure 2.1 Distribution of schemes in the estimated eligible universe and
+membership as at 31 March 2025
+Figure 6.1 Annual insolvency rates
+Figure 9.9 Percentage of total levy that is scheme-based by levy band
+The Purple Book 2025 dataset, by size of scheme membership Figure 4.8 Distribution of estimated full buy-out funding ratios by size
+Figure 6.2 England and Wales underlying company insolvencies Figure 9.10 Percentage of total levy that is scheme-based by funding ratio
+Figure 2.2 Distribution of assets, s179 liabilities, and members in The Purple
+of scheme membership as at 31 March 2025
+(seasonally adjusted) (on a stressed and smoothed basis, excluding bespoke asset
+Book 2025 dataset as at 31 March 2025 Figure 4.9 Analysis of s179 funding ratios by scheme maturity as at
+stress submissions)
+Figure 6.3 Average levy rates of sponsoring companies by scheme
+Figure 2.3 The Purple Book datasets
+31 March 2025
+membership size Figure 9.11 Number of sponsoring employers in each D&B scorecard
+Figure 2.4 R
+o
+e
+f
+c
+c
+o
+h
+n
+an
+ci
+g
+li
+e
+a
+s
+ti o
+o
+n
+ve
+a
+r
+n
+th
+d
+e
+im
+la
+p
+s
+a
+t
+c
+y
+t
+e
+o
+ar
+n
+i n
+sc
+T
+h
+h
+e
+e
+m
+P
+e
+u
+s
+r
+,
+p
+a
+l
+s
+e
+s e
+B
+t
+o
+s
+o
+, a
+k
+n
+d
+d
+a
+l
+t
+i
+a
+a
+s
+b
+e
+il
+t
+i ties,
+Figure 4.10 D
+m
+i
+a
+st
+t
+r
+u
+ib
+ri
+u
+ty
+ti o
+as
+n
+a
+o
+t
+f
+3
+f
+1
+u n
+M
+d
+a
+i
+r
+n
+c
+g
+h
+r
+2
+a
+0
+ti
+2
+o
+5
+s on an s179 basis by scheme
+Chapter 07: Figure 9.12 L
+in
+e v
+e
+y
+a c
+in
+h
+v
+D
+oi
+&
+c
+B
+e d
+s c
+in
+o r
+r
+e
+e
+c
+sp
+ar
+e
+d
+c t of schemes with sponsoring employers
+Figure 2.5 Distribution of assets and s179 liabilities in The Purple Book 2025 Figure 4.11 Analysis of s179 funding ratios by scheme status as at Figure 7.1 Distribution of schemes and assets by tier and asset
+Figure 9.13 Number of schemes with sponsoring employers in each
+dataset by date of s179 valuation 31 March 2025 allocation date
+D&B scorecard
+Chapter 03: Figure 4.12 Distribution of schemes by s179 funding ratios within scheme Figure 7. 2 Proportion of schemes and assets in each asset tier
+Figure 9.14 Aggregate funding ratio (unstressed and unsmoothed) of
+status groups as at 31 March 2025
+Figure 3.1 Distribution of schemes by scheme status
+Figure 7.3 Weighted average asset allocation in total assets schemes with sponsoring employers in each D&B scorecard
+Figure 4.13 Analysis of estimated full buy-out funding ratios by scheme
+Figure 7.4 Asset allocation: simple averages
+Figure 3.2 Distribution of schemes by scheme status and member group status as at 31 March 2025 Chapter 10:
+Figure 7.5 Bond splits – high-level breakdown
+Figure 3.3 Distribution of schemes by scheme status and year Figure 4.14 Distribution of schemes by estimated full buy-out funding Figure 10.1 Total claim amounts (s179 basis) for schemes entering an
+Figure 3.4 Distribution of schemes by scheme status and year ratios within scheme status groups as at 31 March 2025 Figure 7.6 Bond splits – granular breakdown of The Purple Book assessment period
+2025 dataset
+(excluding hybrid schemes) Figure 4.15 s179 liabilities by member status in current and historical Figure 10.2 Number of schemes in assessment each year, as at 31 March
+Figure 3.5 Distribution of members by scheme status Purple Book datasets Figure 7.7 Equity splits Figure 10.3 Funding statistics for schemes in assessment each year,
+Figure 3.6 Distribution of members by scheme status and year Figure 4.16 Estimated running costs by size of scheme Figure 7.8 Weighted average asset allocation of schemes by asset size as at 31 March
+Figure 7.9 Weighted averages of equity and bond holdings split by asset size
+Figure 3.7 Distribution of members by scheme status and year Chapter 05: Figure 10.4 Percentage of schemes and percentage of s179 liabilities
+(excluding hybrid schemes) Figure 7.1 0 Weighted average asset allocation by s179 funding ratio grouped by size of liabilities, for schemes in assessment
+Figure 5.1 Historical s179 aggregate funding ratio and net funding position
+as at 31 March 2025
+Figure 3.8 Number and distribution of members by member type and
+of pension schemes in The Purple Book datasets
+Figure 7.1 1 Weighted average asset allocation of schemes by scheme maturity
+scheme status as at 31 March 2025 Figure 7.1 2 Weighted average asset allocation of schemes by scheme status Figure 10.5 Proportion of schemes in assessment by membership size
+Figure 5.2 Historical movements in assets and s179 liabilities of schemes
+Figure 3.9 Active members in The Purple Book datasets
+in The Purple Book datasets Chapter 08:
+Figure 10.6 Maturity of schemes in assessment by membership size
+Figure 3.10 Distribution of member type by scheme membership size
+Figure 5.3 Historical aggregate s179 funding position for schemes in deficit
+Figure 10.7 Total s179 deficit of schemes in assessment by liability size
+Figure 8.1 Contingent assets by type
+Figure 3.11 Proportion of schemes by scheme membership size, by year and surplus Chapter 11:
+Figure 8.2 Planned recovery plan payments until 2035 by scheme asset size
+Figure 3.12 Distribution of schemes by asset size Figure 5.4 Historical percentage of schemes in deficit each month in
+Figure 11.1 Total compensation and number of member records
+The Purple Book datasets Figure 8.3 Technical Provisions and recovery plan lengths
+Figure 3.13 Pension indexation types for scheme benefits accrued before
+(unweighted averages) Figure 11.2 Sex of members of the PPF
+6 April 1997 Figure 5.5 Movements in gilt yields
+Figure 8.4 Value of risk transfer deals since 2013 Figure 11.3 Distribution of members receiving compensation, and
+Figure 3.14 Pension indexation types for scheme benefits accrued after Figure 5.6 Movements in equity indices
+compensation in payment, by annualised compensation level
+5 April 1997
+Figure 5.7 Impact of changes in gilt yields and equity prices on
+Figure 8.5 Number and value of risk transfer deals since 2013
+Figure 11.4 Distribution of deferred members and compensation by
+s179 funding positions from a base net funding position Chapter 09:
+Chapter 04: annualised compensation level
+of £213.9 billion as at 31 March 2025
+Figure 4.1 Key funding statistics as at 31 March 2025 Figure 9.1 Total levy Figure 11.5 Status of members receiving compensation
+Figure 5.8 Impact of changes in gilt yields and equity prices on assets
+Figure 4.2 Current and historical funding figures on an s179 basis from a base of 100 as at 31 March 2025 Figure 9.2 Distribution of levy by largest levy payers in 2024/25 Figure 11.6 Distribution of members and compensation accrual type by
+Figure 4.3 Current and historical funding figures on an estimated full Figure 5.9 Impact of changes in gilt yields on s179 liabilities as at
+Figure 9.3 Schemes with no risk-based levy by levy year Normal Pension Age (NPA)
+buy-out basis 31 March 2025 Figure 9.4 Number of schemes within each levy band Figure 11.7 Annualised compensation by UK region
+Figure 4.4 Analysis of schemes in deficit on an estimated full buy-out basis Figure 5.10 Impact of changes in nominal or real gilt yields on s179 liabilities Figure 9.5 Number of schemes with capped risk-based levies Chapter 12:
+Figure 4.5 s179 funding ratios by size of scheme membership as at as at 31 March 2025 (base = £854.2 billion) by funding ratio (on a stressed and smoothed basis)
+Figure 12.1 Projections of our reserves
+31 March 2025 Figure 5.11 Impact of changes in life expectancy assumptions on s179 Figure 9.6 Levy distribution by levy band
+Figure 12.2 Projections of cumulative claims
+Figure 4.6 Distribution of s179 funding ratios by size of scheme liabilities as at 31 March 2025 (base = £854.2 billion) Figure 9.7 s179 aggregate stressed smoothed liabilities by levy band
+membership as at 31 March 2025 Figure 5.12 Impact on universe assets and liabilities under alternative
+measures and methods

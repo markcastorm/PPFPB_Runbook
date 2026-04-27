@@ -1,0 +1,154 @@
+Follow the SIMBA pipeline architecture documented in:
+- D:\Projects\SIMBA-RUNBOOKS\TLIAD_Runbook\Project_information\CLAUDE.md (full technical context)
+((D:\Projects\SIMBA-RUNBOOKS\TLIAD_Runbook\scraper.py)
+(D:\Projects\SIMBA-RUNBOOKS\TLIAD_Runbook\orchestrator.py)
+(D:\Projects\SIMBA-RUNBOOKS\TLIAD_Runbook\main.py)
+(D:\Projects\SIMBA-RUNBOOKS\TLIAD_Runbook\file_generator.py)
+(D:\Projects\SIMBA-RUNBOOKS\TLIAD_Runbook\extractor.py)
+(D:\Projects\SIMBA-RUNBOOKS\TLIAD_Runbook\config.py)) so this are the files that make upt the laud.md  read them only if you dont udertand the claude.md file to save tokens
+
+
+- D:\Projects\SIMBA-RUNBOOKS\Runbook_RELPRCLVLINDX\Project_information\PIPELINE_PROMPT.md (file skeletons + rules)
+
+Same structure: config.py, scraper.py, extractor.py, file_generator.py, orchestrator.py, main.py
+Same output: DATA .xls, META .xls, ZIP, master CSV update, timestamped + latest folders
+Same environment: Windows dev, Docker Linux production, all packages pre-installed, os.path.join() everywhere
+
+now weare getting started on a new runnbook(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPFPB_Runbook.xlsx) its excel file you can use a script to read excell files since you cant read excel files
+Here is the csv version (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPFPB_DATA_20241205 - DATA (1).csv) of the manual data
+HEre is the xlsx version (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPFPB_DATA_20241205 (1).xlsx)
+Meta  file (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPFPB_META_20231215.xlsx)
+
+analyze them first before we started 
+thistime we will  have the config.py  add the necessary collumns mapinng since the sub headers and headers in the manual data will be exactly the way they are to every output and in the exact arrangemen  since they are absolute unless other wise
+remember they are absolute so store them in the config .py
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPFPB_DATA_20241205 - DATA (1).csv)  analyze these files verry keenly they are verry important  lets get started
+
+lets first start with the scraper.py 
+we need to  visit this link using selenium stealth ensure we mimic human clicks   and winreg too ensure it works for linux too other wise if it cant dont use it also ensure also works for headles true too
+lets visit this link
+(https://www.ppf.co.uk/purple-book)
+
+once the site is loaded it looks like this (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image1.png)(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\sample.txt) this file is hude dont try reading the whole of it that will waste my tokens focuss on the inportant sections only 
+first we need to deal with the cookie section (<div id="onetrust-banner-sdk" class="otFloatingRoundedCorner ot-bottom-left ot-wo-title ot-buttons-fw" tabindex="0" role="region" aria-label="Cookie banner" style="bottom: 1rem;"><div class="ot-sdk-container" role="alertdialog" aria-describedby="onetrust-policy-text" aria-modal="true" aria-label="Privacy"><div class="ot-sdk-row"><div id="onetrust-group-container" class="ot-sdk-twelve ot-sdk-columns"><div id="onetrust-policy"><div class="banner-header"><div class="banner_logo"></div></div><p id="onetrust-policy-text">By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. </p></div></div><div id="onetrust-button-group-parent" class="ot-sdk-twelve ot-sdk-columns has-reject-all-button"><div id="onetrust-button-group"><div class="banner-actions-container"><button id="onetrust-accept-btn-handler">Accept All Cookies</button> <button id="onetrust-reject-all-handler">Reject All</button></div><button id="onetrust-pc-btn-handler">Cookies Settings</button></div></div><!-- Close Button --><div id="onetrust-close-btn-container"><button class="onetrust-close-btn-handler banner-close-button ot-close-icon" style="background-image: url(&quot;https://cookie-cdn.cookiepro.com/logos/static/ot_close.svg&quot;);
+" aria-label="Close"></button></div><!-- Close Button END--></div></div></div>)
+ensure you confir if the cookie overlat is there if its there then click on accept all cookied butting dynamicaly 
+
+then proceed to lookin gfor the report (<div class="hero  bg-purple-2023">
+        <div role="region" class="hero__content">
+            <div class="hero__content__inner">
+                <h1>The Purple Book</h1>
+                <p><span class="cf0">Every year we publish the pensions universe risk profile, known as The Purple Book.</span></p>
+                
+                
+                    <a href="/-/media/PPF-Website/Public/Purple-Book-Data-2025/Pension-Protection-Fund-Purple-Book-2025-accessible.pdf" target="">
+                        Download The Purple Book 2025
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                <path d="M6.66602 16H25.3327" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M20 21.3333L25.3333 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M20 10.6667L25.3333 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </span>
+                    </a>
+            </div>
+        </div>
+        <img src="/-/media/PPF-Website/Images/PB-banner-image.png?la=en&amp;h=400&amp;w=400&amp;hash=F120B354CA8FB1D083432851DCC0835C" alt="Two people looking at a laptop in an office">
+    </div>) for this case we are looking for the download like for the year avalable dynamicaly so no hardcoding sometimes it might be a button or link so no hard cording look for it dynamicaly  then click it  like for right now its a link an older year was a button (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image2.png)
+    as you can see in 2023 it was looking that way it was a button but the text dint change (Download The Purple Book "YEAR")  only the year changes so make the code dynamic 
+    be creative here  because the site structure changes the button will open the pdf in a pdf viewer page (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image3.png)
+     so figure how to trigyr the download  of the file save it in the download folder with time stamped subfolders for every run (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\Pension-Protection-Fund-Purple-Book-2025-accessible.pdf) this is the pdf it has alot of images and data
+
+     so on the parsing  we have seen haw camelot is good at table extraction and making it extremely dynamic  no locking the table extractions 
+thay might be on different pages  remember that i have a sample of downloaded files for different years (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\Pension-Protection-Fund-Purple-Book-2025-accessible.pdf)(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPF-The-Purple-Book-2024.pdf)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPF-The-Purple-Book-2023.pdf)(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPF_PurpleBook_2022.pdf)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\PPF_PurpleBook_2021.pdf)
+
+dontry reading the full pdf they are hudge and will consum all of my tokens we will concentrate on the pages we only need  the ones with the tabels we need 
+we need to navigate for this page (Navigate to "Weighted average asset allocation in total assets",  (actual allocatoin))
+we can use plumber to dynamicaly search for the page (Weighted average asset allocation in total assets) (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image4.png) as you see for the 2025 pdf we can find it on page 24
+
+as you see the page has 2 tables we are intherested on what is exactly below the title (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image5.png)
+you can see i have anotates the data we need  which based on the years we can  then dynamicaly mapp them to the output based on the configs and the headers arcoording to the subheaders
+
+(Column name	Measure code
+Equities	GBRPRIVATEPENSIONFUNDS.LISTEDANDPRIVATEEQUITIES.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Bonds	GBRPRIVATEPENSIONFUNDS.BONDS.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Other Investments	GBRPRIVATEPENSIONFUNDS.ALTERNATIVES.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Property	GBRPRIVATEPENSIONFUNDS.REALESTATE.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Cash and Deposits	GBRPRIVATEPENSIONFUNDS.CASH.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Insurance policies	GBRPRIVATEPENSIONFUNDS.INSURANCE.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Hedge Funds	GBRPRIVATEPENSIONFUNDS.HEDGEFUNDS.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Annuities	GBRPRIVATEPENSIONFUNDS.ANNUITIES.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Diversified growth funds	GBRPRIVATEPENSIONFUNDS.DEVIGROWFUND.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Weighted average asset allocation in total assets, Absolute returns	GBRPRIVATEPENSIONFUNDS.ABSRETURN.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK
+Miscellaneous	GBRPRIVATEPENSIONFUNDS.OTHER.ACTUALALLOCATION.NONE.A.1@PURPLEBOOK)
+
+save (Save all "n/a" values from the source as "NA".	) and " " meaning (blanks) as NA  make it configurable such that i can change this in the config file 
+
+analyze this verry well  the next table is the (Bond splits) some time it has  – high-level breakdown sometimes not   you can use key words like this (Weighted average Simple average
+Year/The Purple Book dataset
+Government
+fixed interest
+Corporate
+fixed interest Index-linked)  which are supposed to be the headers  which can help you locate the tabl faster (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image6.png)
+the table might have a different structure but the headers are always constant  remeber that so the code needs to be highly dynamic
+this is what we need (
+    Column names	Measure code
+Bonds splits, Bonds, Weighted average, Government fixed interest	GBRPRIVATEPENSIONFUNDS.BONDS.WEIGHTEDAVG.GOVERNMENTFIXEDINTEREST.A@PURPLEBOOK
+Bonds splits, Bonds, Weighted average, Corporate fixed interest	GBRPRIVATEPENSIONFUNDS.BONDS.WEIGHTEDAVG.CORPORATEFIXEDINTEREST.A@PURPLEBOOK
+Bonds splits, Bonds, Weighted average, Index-linked	GBRPRIVATEPENSIONFUNDS.BONDS.WEIGHTEDAVG.INDEXLINKED.A@PURPLEBOOK
+)
+this will help narrow down what we need for mapping as you see (Bonds splits, Bonds, Weighted average, Government fixed interest)
+this meeans under (Weighted average) we look for (Government fixed interest) like you can see in the screenshot 2008= 33.2 )
+you can see for 2025 pdf (Bonds splits, Bonds, Weighted average, Corporate fixed interest)  this field change name to (Corporate –
+public markets
+only from 2023)  so also make it dynamic  and its not this (Corporate –
+private debt we look for Corporate fixed-interest) or Corporate which is not private debt  under the (Weighted average) side  look(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image7.png) 
+you can see (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image8.png) the differense in the different year pdf  
+
+the last table is the (3.2. Find Figure 7.5 "Equity splits" and collect all data points available in the latest report )
+as ussual we search for it dynamicaly (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image9.png)
+you can see in the image
+for this section we are interested with this 
+(
+    Column names	Measure codes
+Equity splits, Equities, Weighted average, UK quoted	GBRPRIVATEPENSIONFUNDS.EQUITIES.WEIGHTEDAVG.UKQUOTED.A@PURPLEBOOK
+Equity splits, Equities, Weighted average, Overseas quoted	GBRPRIVATEPENSIONFUNDS.EQUITIES.WEIGHTEDAVG.OVERSEASQUOTED.A@PURPLEBOOK
+Equity splits, Equities, Weighted average, Developed markets	GBRPRIVATEPENSIONFUNDS.EQUITIES.WEIGHTEDAVG.DEVELOPEDMARKETS.A@PURPLEBOOK
+Equity splits, Equities, Weighted average, Emerging markets	GBRPRIVATEPENSIONFUNDS.EQUITIES.WEIGHTEDAVG.EMERGINGMARKETS.A@PURPLEBOOK
+Equity splits, Equities, Weighted average, Unquoted/Private	GBRPRIVATEPENSIONFUNDS.EQUITIES.WEIGHTEDAVG.UNQUOTEDPRIVATE.A@PURPLEBOOK
+) 
+same in the equity splits table we look under weighted average headers 
+as you can see (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image10.png) the image i have anotated the section we need this parser needs to be dynamic i thinck for the test we can extract the data dynamical or the full tables first to csvs  so that we can evalute our accuracy befor creating the script 
+do the test between the samples understand the pdf structur no hard coding i would rather be dynamic  
+
+i have a creazy i dea we can have a master file (D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Master_Data\Master_PPFPB_DATA.csv)
+that  that we will be updating with new data always trust the source but be for that we will be need ing it to help uss narrow down the tables and columns need ded because the values change abit the table just gets updated with a new year 
+as much as the structure of the tables change over the year this will 100% gurantee us to find the colum of data that we need  lets take for instance bondsplits over the years the strucrue changes abit but the values dont change that much just new years being added to the table 
+(
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image 2021 BS.png)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image 2022 BS.png)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image 2023 BS.png)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image 2024 BS.png)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image 2025 BS.png)
+)
+
+YOU CAN SEE over the years for bond splits 
+AND EQUITY  
+(
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image EQ 2021.png)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image EQ 2022.png)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image EQ 2023.png)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image EQ 2024.png)
+(D:\Projects\SIMBA-RUNBOOKS\PPFPB_Runbook\Project_information\image EQ 2025.png)
+)
+do a dee dive and learn how be inteligent that what am saying you can see the context awwarenes based on the master file will help 
+now after you have  managed to finde the data we need we update the full master with the new data then make a copy of the new master as the new output in the output folder 
+
+with times tamped subfolders for every run and a lates folder always holding the latest files on every run don try reading the full pdf find the pages you need split then then analyze those ok 
+dont waste my tokens be efficient  camelot for table extraction please
+
+
+
+
